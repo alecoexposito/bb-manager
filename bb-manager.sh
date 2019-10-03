@@ -124,10 +124,6 @@ setup_modem() {
 	fi
 }
 
-setup_watchdog() {
-
-}
-
 install_gps() {
 	install_common_dependencies
 	install_gps_dependencies
