@@ -95,10 +95,10 @@ create_hazflix_folders() {
 	sudo cp install_files/apache2/www/* /var/www/html/ -r
 	sudo mkdir /var/www/html/uploads
 	sudo chmod 777 /var/www/html/uploads -R
-	sudo cp install_files/apache2/sites_available/* /etc/apache2/sites_available
+	sudo cp install_files/apache2/sites_available/* /etc/apache2/sites-available
 	sudo a2ensite android windows apple uploads
 	sudo a2enmod rewrite
-	sudo systemctl apache2 restart
+	sudo systemctl restart apache2
 }
 
 setup_modem() {
