@@ -155,10 +155,10 @@ while getopts "hgamc:" opt; do
         show_help
         exit 0
         ;;
-    g)  install_gps_dependencies
+    g)  install_gps
 		exit 0
         ;;
-    a)	install_hazflix_dependencies
+    a)	install_hazflix
 		exit 0
 		;;
     m)	setup_modem
