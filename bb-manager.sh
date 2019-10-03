@@ -79,6 +79,8 @@ initialize_gps_flow() {
 	cp .env.default .env
 	read -p "Entre el IMEI: " imei
 	sed -i 's:^[ \t]*DEVICE_IMEI[ \t]*=\([ \t]*.*\)$:DEVICE_IMEI='${imei}':' .env
+	read -p "Entre el ip del server donde está el tracker: " ip_tracker
+	sed -i 's:^[ \t]*DEVICE_IMEI[ \t]*=\([ \t]*.*\)$:DEVICE_IMEI='${ip_tracker}':' .env
 	echo "iniciando app bb"
 	pm2 start server.js
 	pm2 restart server
