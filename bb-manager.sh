@@ -106,8 +106,11 @@ setup_modem() {
 	sudo cp install_files/modem/quectel-chat-connect /etc/ppp/peers/
 	sudo cp install_files/modem/quectel-chat-disconnect /etc/ppp/peers/
 	sudo cp install_files/modem/quectel-ppp /etc/ppp/peers/
-	read -p "Presione Enter para editar el fichero quectel-ppp y ponerle el usuario, contraseña y proveedor para internet"
+	read -p 'Presione Enter para editar el fichero quectel-ppp y ponerle el usuario y contraseña Ej.(user "altan" password "altan")'
 	sudo nano /etc/ppp/peers/quectel-ppp
+	read -p 'Presione Enter para editar el fichero quectel-chat-connect y ponerle el proveedor Ej.(OK AT+CGDCONT=1,"IP","altan",,0,0)'
+	sudo nano /etc/ppp/peers/quectel-chat-connect
+
 	echo "Adicionando linea pppd call quectel-ppp & al fichero /etc/rc.local"
 	sudo sed -i "\$i quectel-ppp &" /etc/rc.local
 	echo "linea adicionada:"
@@ -115,13 +118,13 @@ setup_modem() {
 	echo "modem instalado, debe reiniciar para aplicar los cambios"
 	reboot_var = 's'
 	read -p "Reiniciar ahora? (S/n)" reboot_var
-	if [[ $reboot_var == 's|S' ]]; then
+	if [[ $reboot_var == 's|S' ]]; then	
 		sudo reboot
 	fi
 }
 
 setup_watchdog() {
-	
+
 }
 
 install_gps() {
@@ -159,6 +162,9 @@ while getopts "hgac:" opt; do
 		exit 0
         ;;
     a)	install_hazflix_dependencies
+		exit 0
+		;;
+    m)	setup_modem
 		exit 0
 		;;
     c)  camera_id=$OPTARG
