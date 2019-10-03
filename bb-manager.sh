@@ -102,6 +102,7 @@ create_hazflix_folders() {
 }
 
 setup_modem() {
+	echo 'instalando modem'
 	sudo apt-get install ppp
 	sudo cp install_files/modem/quectel-chat-connect /etc/ppp/peers/
 	sudo cp install_files/modem/quectel-chat-disconnect /etc/ppp/peers/
