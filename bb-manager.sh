@@ -77,11 +77,11 @@ create_gps_folders() {
 initialize_gps_flow() {
 	cd ~/bb
 	cp .env.default .env
-	read -p "Enter IMEI: " imei
+	read -p "Entre el IMEI: " imei
 	sed -i 's:^[ \t]*DEVICE_IMEI[ \t]*=\([ \t]*.*\)$:DEVICE_IMEI='${imei}':' .env
-	echo "iniciando app bb, se mostrarán los logs para que verifique que todo esté bien, salir de los logs con Ctrl + C"
+	echo "iniciando app bb"
 	pm2 start server.js
-	pm2 restart server; pm2 logs server
+	pm2 restart server
 	echo "Debe mirar en el admin para ver el id de la bb adicionada"
 	read -p "Entre el id de la bb: " bb_id
 	pm2 stop server
