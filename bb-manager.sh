@@ -149,7 +149,7 @@ OPTIND=1         # Reset in case getopts has been used previously in the shell.
 output_file=""
 camera_id=0
 
-while getopts "hgac:" opt; do
+while getopts "hgamc:" opt; do
     case "$opt" in
     h)
         show_help
