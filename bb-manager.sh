@@ -6,6 +6,7 @@ show_help() {
 	echo "Modo de uso: bb-manager opción"
 	echo "Opciones:"
 	echo "-h: Muestra esta ayuda"
+	echo "-m: Configurar el modem"	
 	echo "-f: Instalación completa de GPS y Haz Flix"
 	echo "-g: Instalación del módulo GPS"
 	echo "-a: Instalación del módulo de Haz Flix"
@@ -23,6 +24,12 @@ install_gps_dependencies() {
 	echo "instalando dependencias gps"
 	echo instalando python-pip
 	sudo apt-get install python-pip
+	echo "instalando python-dev"
+	sudo apt-get install python-dev
+	echo "instalando netifaces"
+	sudo pip install netifaces
+	echo "installing python-daemon"
+	sudo pip install python-daemon
 	echo instalando python setuptools
 	sudo pip install setuptools
 	echo instalando python pyserial
@@ -89,6 +96,8 @@ initialize_gps_flow() {
 	pm2 stop server
 	sed -i 's:^[ \t]*DEVICE_ID[ \t]*=\([ \t]*.*\)$:DEVICE_ID='${bb_id}':' .env
 	pm2 start server
+	sudo pm2 startup
+	pm2 save
 }
 
 create_hazflix_folders() {
@@ -117,6 +126,9 @@ setup_modem() {
 	echo "Adicionando linea pppd call quectel-ppp & al fichero /etc/rc.local"
 	sudo sed -i "\$i quectel-ppp &" /etc/rc.local
 	echo "linea adicionada:"
+	echo "Adicionando watchdog a /etc/rc.local"
+	cp install_files/bb-watchdog.py /home/zurikato/
+	sudo sed -i "\$i python /home/zurikato/scripts/bb-watchdog.py" /etc/rc.local	
 	cat /etc/rc.local
 	echo "modem instalado, debe reiniciar para aplicar los cambios"
 	reboot_var = 's'
