@@ -156,14 +156,20 @@ install_full() {
 	install_hazflix
 }
 
+add_camera() {
+	read -p "Entre el IP de la camara: " ip_camera
+	read -p "Entre el ID de la camara: " id_camera
+	mkdir /home/zurikato/video-backup/$id_camera
+	pm2 start /usr/scripts/record-video.sh $id_camera $ip_camera
+}
+
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
 # Initialize our own variables:
 output_file=""
-camera_id=0
 
-while getopts "hgamc:" opt; do
+while getopts "hgamci:" opt; do
     case "$opt" in
     h)
         show_help
@@ -178,8 +184,9 @@ while getopts "hgamc:" opt; do
     m)	setup_modem
 		exit 0
 		;;
-    c)  camera_id=$OPTARG
-        ;;
+    c)  
+		add_camera
+		;;
     esac
 done
 
