@@ -160,7 +160,7 @@ add_camera() {
 	read -p "Entre el IP de la camara: " ip_camera
 	read -p "Entre el ID de la camara: " id_camera
 	mkdir /home/zurikato/video-backup/$id_camera
-	pm2 start /usr/scripts/record-video.sh $id_camera $ip_camera
+	pm2 start --name record-video-$id_camera /usr/scripts/record-video.sh -- $id_camera $ip_camera
 }
 
 # A POSIX variable
