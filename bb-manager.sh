@@ -133,7 +133,7 @@ setup_modem() {
 	echo "modem instalado, debe reiniciar para aplicar los cambios"
 	reboot_var = 's'
 	read -p "Reiniciar ahora? (S/n)" reboot_var
-	if [ $reboot_var = 's' ] || [ $reboot_var = 's' ]; then	
+	if [ "$reboot_var" = "s" ] || [ "$reboot_var" = "S" ]; then	
 		sudo reboot
 	fi
 }
