@@ -10,7 +10,7 @@ show_help() {
 	echo "-f: Instalación completa de GPS y Haz Flix"
 	echo "-g: Instalación del módulo GPS"
 	echo "-a: Instalación del módulo de Haz Flix"
-	echo "-c: Adicionar una camara, se le pasa el id de la camara en el admin. Ej. (bb-manager -c 5)"	
+	echo "-c: Adicionar una camara"	
 }
 
 install_common_dependencies() {
@@ -161,7 +161,8 @@ add_camera() {
 	read -p "Entre el ID de la camara: " id_camera
 	mkdir /home/zurikato/video-backup/$id_camera
 	pm2 start --name record-video-$id_camera /usr/scripts/record-video.sh -- $id_camera $ip_camera
-	sudo pm2 startup
+	pm2 startup
+	sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u zurikato --hp /home/zurikato
 	pm2 save
 }
 
