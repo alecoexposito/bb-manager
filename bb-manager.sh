@@ -17,7 +17,6 @@ install_common_dependencies() {
 	echo "instalando dependencias comunes"
 	sudo apt update
 	sudo apt-get update
-	install_common_dependencies
 	echo instalando python setuptools
 	sudo pip install setuptools
 	echo "instalando dependencias gps"
