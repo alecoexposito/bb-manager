@@ -126,9 +126,16 @@ setup_modem() {
 	read -p 'Presione Enter para editar el fichero quectel-chat-connect y ponerle el proveedor Ej.(OK AT+CGDCONT=1,"IP","altan",,0,0)'
 	sudo nano /etc/ppp/peers/quectel-chat-connect
 
+	sudo sed -i "\$i sleep 2" /etc/rc.local
 	echo "Adicionando linea pppd call quectel-ppp & al fichero /etc/rc.local"
 	sudo sed -i "\$i pppd call quectel-ppp &" /etc/rc.local
+	sudo sed -i "\$i sleep 2" /etc/rc.local
 	echo "linea adicionada:"
+	cd ~
+	mkdir scripts
+	wget https://github.com/alecoexposito/bb-watchdog/blob/master/classes/main.py -O bb-watchdog.py
+	sudo chmod +x bb-watchdog.py
+	cd ~
 	echo "Adicionando watchdog a /etc/rc.local"
 	cp install_files/bb-watchdog.py /home/zurikato/
 	sudo sed -i "\$i python /home/zurikato/scripts/bb-watchdog.py" /etc/rc.local	
