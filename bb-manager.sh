@@ -133,7 +133,7 @@ setup_modem() {
 	echo "linea adicionada:"
 	cd ~
 	mkdir scripts
-	wget https://github.com/alecoexposito/bb-watchdog/blob/master/classes/main.py -O bb-watchdog.py
+	wget https://github.com/alecoexposito/bb-watchdog/raw/master/classes/main.py -O bb-watchdog.py
 	sudo chmod +x bb-watchdog.py
 	cd ~
 	echo "Adicionando watchdog a /etc/rc.local"
