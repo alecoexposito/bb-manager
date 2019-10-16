@@ -17,23 +17,25 @@ install_common_dependencies() {
 	echo "instalando dependencias comunes"
 	sudo apt update
 	sudo apt-get update
-}
-
-install_gps_dependencies() {
 	install_common_dependencies
+	echo instalando python setuptools
+	sudo pip install setuptools
 	echo "instalando dependencias gps"
 	echo instalando python-pip
 	sudo apt-get install python-pip
 	echo "instalando python-dev"
 	sudo apt-get install python-dev
+	echo instalando python setuptools
+	sudo pip install setuptools
 	echo "instalando netifaces"
 	sudo pip install netifaces
 	echo "installing python-daemon"
 	sudo pip install python-daemon
-	echo instalando python setuptools
-	sudo pip install setuptools
 	echo instalando python pyserial
 	sudo pip install pyserial
+}
+
+install_gps_dependencies() {
 	echo instalando nodejs
 	curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
 	sudo apt-get install -y nodejs
@@ -124,7 +126,7 @@ setup_modem() {
 	sudo nano /etc/ppp/peers/quectel-chat-connect
 
 	echo "Adicionando linea pppd call quectel-ppp & al fichero /etc/rc.local"
-	sudo sed -i "\$i quectel-ppp &" /etc/rc.local
+	sudo sed -i "\$i pppd call quectel-ppp &" /etc/rc.local
 	echo "linea adicionada:"
 	echo "Adicionando watchdog a /etc/rc.local"
 	cp install_files/bb-watchdog.py /home/zurikato/
