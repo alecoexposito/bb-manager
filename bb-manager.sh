@@ -170,6 +170,8 @@ add_camera() {
 	read -p "Entre el IP de la camara: " ip_camera
 	read -p "Entre el ID de la camara: " id_camera
 	mkdir /home/zurikato/video-backup/$id_camera
+	mkdir /home/zurikato/camera-local
+	mkdir /home/zurikato/camera-local/$id_camera
 	pm2 start --name record-video-$id_camera /usr/scripts/record-video.sh -- $id_camera $ip_camera
 	pm2 startup
 	sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u zurikato --hp /home/zurikato
