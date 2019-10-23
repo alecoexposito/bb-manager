@@ -74,6 +74,9 @@ create_gps_folders() {
 	sudo mkdir /usr/scripts
 	sudo cp ~/bb/scripts/* /usr/scripts
 	sudo chmod 777 /usr/scripts -R
+	cd ~/scripts
+	wget https://github.com/alecoexposito/bb-watchdog/raw/master/classes/main.py -O bb-watchdog.py
+	sudo cp bb-watchdog.py /usr/scripts/bb-watchdog.py
 	echo "activando gps"
 	cd ~/scripts
 	echo "Adicionando linea para activar gps en /etc/rc.local"
@@ -171,7 +174,7 @@ add_camera() {
 	read -p "Entre el ID de la camara: " id_camera
 	mkdir /home/zurikato/video-backup/$id_camera
 	mkdir /home/zurikato/camera-local
-	mkdir /home/zurikato/camera-local/$id_camera
+	echo 0 > /home/zurikato/camera-local/camera-$id_camera.jpg
 	pm2 start --name record-video-$id_camera /usr/scripts/record-video.sh -- $id_camera $ip_camera
 	pm2 startup
 	sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u zurikato --hp /home/zurikato
