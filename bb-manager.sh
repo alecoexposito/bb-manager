@@ -89,14 +89,17 @@ initialize_gps_flow() {
 	cd ~/bb
 	cp .env.default .env
 	read -p "Entre el IMEI: " imei
+
 	sed -i 's:^[ \t]*DEVICE_IMEI[ \t]*=\([ \t]*.*\)$:DEVICE_IMEI='${imei}':' .env
 	read -p "Entre el ip del server donde está el tracker: " ip_tracker
+
 	sed -i 's:^[ \t]*TRACKER_IP[ \t]*=\([ \t]*.*\)$:TRACKER_IP='${ip_tracker}':' .env
 	echo "iniciando app bb"
 	pm2 start server.js
 	pm2 restart server
 	echo "Debe mirar en el admin para ver el id de la bb adicionada"
 	read -p "Entre el id de la bb: " bb_id
+	
 	pm2 stop server
 	sed -i 's:^[ \t]*DEVICE_ID[ \t]*=\([ \t]*.*\)$:DEVICE_ID='${bb_id}':' .env
 	pm2 start server
