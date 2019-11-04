@@ -138,7 +138,7 @@ setup_modem() {
 	mkdir scripts
 	wget https://github.com/alecoexposito/bb-watchdog/raw/master/classes/main.py -O bb-watchdog.py
 	sudo chmod +x bb-watchdog.py
-	cd ~
+	mv bb-watchdog.py ~/scripts/
 	echo "Adicionando watchdog a /etc/rc.local"
 	cp install_files/bb-watchdog.py /home/zurikato/
 	sudo sed -i "\$i python /home/zurikato/scripts/bb-watchdog.py" /etc/rc.local	
