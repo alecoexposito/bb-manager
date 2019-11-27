@@ -17,8 +17,6 @@ install_common_dependencies() {
 	echo "instalando dependencias comunes"
 	sudo apt update
 	sudo apt-get update
-	echo instalando python setuptools
-	sudo pip install setuptools
 	echo "instalando dependencias gps"
 	echo instalando python-pip
 	sudo apt-get install python-pip
@@ -64,7 +62,7 @@ create_gps_folders() {
 	echo creando carpetas necesarias
 	mkdir ~/camera
 	mkdir ~/camera-local
-	echo 0 > ~/camera-local/camera-1.jpg
+	echo 0 > ~/camera-local/camera-3.jpg
 	mkdir ~/video-backup
 	mkdir ~/.db
 	echo copiando base de datos sqlite
