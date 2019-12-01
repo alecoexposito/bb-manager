@@ -122,9 +122,9 @@ setup_modem() {
 	install_common_dependencies
 	echo 'instalando modem'
 	sudo apt-get install ppp
-	sudo cp install_files/modem/quectel-chat-connect /etc/ppp/peers/
-	sudo cp install_files/modem/quectel-chat-disconnect /etc/ppp/peers/
-	sudo cp install_files/modem/quectel-ppp /etc/ppp/peers/
+	sudo cp install_files/quectel-chat-connect /etc/ppp/peers/
+	sudo cp install_files/quectel-chat-disconnect /etc/ppp/peers/
+	sudo cp install_files/quectel-ppp /etc/ppp/peers/
 	read -p 'Presione Enter para editar el fichero quectel-ppp y ponerle el usuario y contraseña Ej.(user "altan" password "altan")'
 	sudo nano /etc/ppp/peers/quectel-ppp
 	read -p 'Presione Enter para editar el fichero quectel-chat-connect y ponerle el proveedor Ej.(OK AT+CGDCONT=1,"IP","altan",,0,0)'
@@ -141,7 +141,6 @@ setup_modem() {
 	sudo chmod +x bb-watchdog.py
 	mv bb-watchdog.py ~/scripts/
 	echo "Adicionando watchdog a /etc/rc.local"
-	cp install_files/bb-watchdog.py /home/zurikato/
 	sudo sed -i "\$i python /home/zurikato/scripts/bb-watchdog.py" /etc/rc.local	
 	cat /etc/rc.local
 	echo "modem instalado, debe reiniciar para aplicar los cambios"
