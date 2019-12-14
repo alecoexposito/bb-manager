@@ -73,8 +73,8 @@ create_gps_folders() {
 	sudo cp ~/bb/scripts/* /usr/scripts
 	sudo chmod 777 /usr/scripts -R
 	cd ~/scripts
-	wget https://github.com/alecoexposito/bb-watchdog/raw/master/classes/main.py -O bb-watchdog.py
-	sudo cp bb-watchdog.py /usr/scripts/bb-watchdog.py
+	#wget https://github.com/alecoexposito/bb-watchdog/raw/master/classes/main.py -O bb-watchdog.py
+	#sudo cp bb-watchdog.py /usr/scripts/bb-watchdog.py
 	echo "activando gps"
 	cd ~/scripts
 	echo "Adicionando linea para activar gps en /etc/rc.local"
