@@ -120,6 +120,9 @@ create_hazflix_folders() {
 setup_modem() {
 	echo "copying modem files"
 	sudo apt-get install libqmi-utils udhcpc
+	sudo apt-get install perl
+	sudo cpan install Device::Modem
+	sudo cpan install Device::Gsm
 	sudo cp install_files/modem/etc/network/interfaces.d/wwan0 /etc/network/interfaces.d/
 	sudo cp install_files/modem/etc/qmi-network.conf /etc/
 	sudo cp install_files/modem/usr/local/bin/* /usr/local/bin/
