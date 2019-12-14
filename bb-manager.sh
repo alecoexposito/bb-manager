@@ -118,38 +118,18 @@ create_hazflix_folders() {
 }
 
 setup_modem() {
-	echo "instalando dependencias"
-	install_common_dependencies
-	echo 'instalando modem'
-	sudo apt-get install ppp
-	sudo cp install_files/quectel-chat-connect /etc/ppp/peers/
-	sudo cp install_files/quectel-chat-disconnect /etc/ppp/peers/
-	sudo cp install_files/quectel-ppp /etc/ppp/peers/
-	read -p 'Presione Enter para editar el fichero quectel-ppp y ponerle el usuario y contraseña Ej.(user "altan" password "altan")'
-	sudo nano /etc/ppp/peers/quectel-ppp
-	read -p 'Presione Enter para editar el fichero quectel-chat-connect y ponerle el proveedor Ej.(OK AT+CGDCONT=1,"IP","altan",,0,0)'
-	sudo nano /etc/ppp/peers/quectel-chat-connect
-
-	sudo sed -i "\$i sleep 2" /etc/rc.local
-	echo "Adicionando linea pppd call quectel-ppp & al fichero /etc/rc.local"
-	sudo sed -i "\$i pppd call quectel-ppp &" /etc/rc.local
-	sudo sed -i "\$i sleep 2" /etc/rc.local
-	echo "linea adicionada:"
-	cd ~
-	mkdir scripts
-	wget https://github.com/alecoexposito/bb-watchdog/raw/master/classes/main.py -O bb-watchdog.py
-	sudo chmod +x bb-watchdog.py
-	mv bb-watchdog.py ~/scripts/
-	echo "Adicionando watchdog a /etc/rc.local"
-	sudo sed -i "\$i python /home/zurikato/scripts/bb-watchdog.py" /etc/rc.local	
-	cat /etc/rc.local
-	echo "modem instalado, debe reiniciar para aplicar los cambios"
-	reboot_var = 's'
-	read -p "Reiniciar ahora? (S/n)" reboot_var
-	if [ "$reboot_var" = "s" ] || [ "$reboot_var" = "S" ]; then	
-		sudo reboot
-	fi
+	echo "copying modem files"
+	sudo apt-get install libqmi-utils udhcpc
+	sudo cp install_files/modem/etc/network/interfaces.d/wwan0 /etc/network/interfaces.d/
+	sudo cp install_files/modem/etc/qmi-network.conf /etc/
+	sudo cp install_files/modem/usr/local/bin/* /usr/local/bin/
+	echo "starting modem"
+	sudo /sbin/ifdown wwan0
+	sleep 1
+	sudo /sbin/ifup wwan0
 }
+
+
 
 install_gps() {
 	install_common_dependencies
