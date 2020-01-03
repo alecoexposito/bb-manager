@@ -85,6 +85,9 @@ create_gps_folders() {
 
 initialize_gps_flow() {
 	cd ~/bb
+	echo "Select IMEI from here"
+	sudo qmicli --dms-get-ids
+	
 	cp .env.default .env
 	read -p "Entre el IMEI: " imei
 
