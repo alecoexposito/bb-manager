@@ -6,11 +6,11 @@ show_help() {
 	echo "Modo de uso: bb-manager opción"
 	echo "Opciones:"
 	echo "-h: Muestra esta ayuda"
-	echo "-m: Configurar el modem"	
+	echo "-m: Configurar el modem"
 	echo "-f: Instalación completa de GPS y Haz Flix"
 	echo "-g: Instalación del módulo GPS"
 	echo "-a: Instalación del módulo de Haz Flix"
-	echo "-c: Adicionar una camara"	
+	echo "-c: Adicionar una camara"
 }
 
 install_common_dependencies() {
@@ -87,7 +87,7 @@ initialize_gps_flow() {
 	cd ~/bb
 	echo "Select IMEI from here"
 	sudo qmicli -d /dev/cdc-wdm0 --dms-get-ids
-	
+
 	cp .env.default .env
 	read -p "Entre el IMEI: " imei
 
@@ -100,7 +100,7 @@ initialize_gps_flow() {
 	pm2 restart server
 	echo "Debe mirar en el admin para ver el id de la bb adicionada"
 	read -p "Entre el id de la bb: " bb_id
-	
+
 	pm2 stop server
 	sed -i 's:^[ \t]*DEVICE_ID[ \t]*=\([ \t]*.*\)$:DEVICE_ID='${bb_id}':' .env
 	pm2 start server
@@ -122,14 +122,14 @@ create_hazflix_folders() {
 
 setup_modem() {
 	echo "copying modem files"
-	
+
 	sudo apt-get install libqmi-utils udhcpc
-	sudo apt-get install perl
-	sudo cpan install Device::Modem
-	sudo cpan install Device::Gsm
+	# sudo apt-get install perl
+	# sudo cpan install Device::Modem
+	# sudo cpan install Device::Gsm
 	sudo cp install_files/modem/etc/network/interfaces.d/wwan0 /etc/network/interfaces.d/
 	sudo cp install_files/modem/etc/qmi-network.conf /etc/
-	sudo cp install_files/modem/usr/local/bin/* /usr/local/bin/
+	sudo cp install_files/modem/usr/local/bin/qmi-network-raw /usr/local/bin/
 	echo "starting modem"
 	sudo /sbin/ifdown wwan0
 	sleep 1
@@ -189,7 +189,7 @@ while getopts "hgamci:" opt; do
     m)	setup_modem
 		exit 0
 		;;
-    c)  
+    c)
 		add_camera
 		;;
     esac
