@@ -187,6 +187,8 @@ setup_hostpad() {
   sudo iptables -A FORWARD -i wwan0 -o wlan0 -m state --state RELATED,ESTABLISHED -j ACCEPT
   sudo iptables -A FORWARD -i wlan0 -o wwan0 -j ACCEPT
   sudo sh -c "iptables-save > /etc/iptables.ipv4.nat"
+  echo 'Reiniciando...'
+  sudo reboot
 }
 
 # A POSIX variable
