@@ -11,6 +11,7 @@ show_help() {
 	echo "-g: Instalación del módulo GPS"
 	echo "-a: Instalación del módulo de Haz Flix"
 	echo "-c: Adicionar una camara"
+  echo "-n: Configurar hostpad"
 }
 
 install_common_dependencies() {
@@ -191,7 +192,7 @@ OPTIND=1         # Reset in case getopts has been used previously in the shell.
 # Initialize our own variables:
 output_file=""
 
-while getopts "hgamci:" opt; do
+while getopts "hgamcni:" opt; do
     case "$opt" in
     h)
         show_help
@@ -206,7 +207,7 @@ while getopts "hgamci:" opt; do
     m)	setup_modem
 		exit 0
 		;;
-    hostpad)
+    n)
       setup_hostpad
       exit 0
       ;;
