@@ -168,6 +168,23 @@ add_camera() {
 	pm2 save
 }
 
+setup_hostpad() {
+
+  sudo cp install_files/hostpad/etc/network/interfaces /etc/network
+  sudo cp install_files/hostpad/etc/hostapd.conf /etc
+  sudo cp install_files/hostpad/etc/default/hostapd /etc/default
+  sudo apt-get purge wpasupplicant
+  echo 'printf "%s\n" net.ipv4.ip_forward=1 >> /etc/sysctl.conf' | sudo su
+  sudo apt-get install dnsmasq
+  sudo cp install_files/hostpad/etc/dnsmasq.conf /etc
+  
+  sudo sh -c "echo 1 > /proc/sys/net/ipv4/ip_forward"
+  sudo iptables -t nat -A POSTROUTING -o wwan0 -j MASQUERADE
+  sudo iptables -A FORWARD -i wwan0 -o wlan0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+  sudo iptables -A FORWARD -i wlan0 -o wwan0 -j ACCEPT
+  sudo sh -c "iptables-save > /etc/iptables.ipv4.nat"
+}
+
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
