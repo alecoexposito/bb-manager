@@ -3,9 +3,9 @@ source /etc/network/interfaces.d/*
 allow-hotplug eth0
 no-auto-down eth0
 iface eth0 inet static
-address 192.168.1.150
+address 192.168.1.110
 netmask 255.255.255.0
-gateway 192.168.1.254   #Comentar cuando  se active Hostapd
+gateway 192.168.1.254
 dns-nameservers 8.8.8.8
 
 allow-hotplug wlan0
