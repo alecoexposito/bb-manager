@@ -172,10 +172,13 @@ add_camera() {
 setup_hostpad() {
 
   sudo cp install_files/hostpad/etc/network/interfaces /etc/network
-  sudo cp install_files/hostpad/etc/hostapd.conf /etc
-  sudo cp install_files/hostpad/etc/default/hostapd /etc/default
+  sudo cp install_files/hostpad/etc/default/hostapd.conf /etc/default
+#  sudo cp install_files/hostpad/etc/default/hostapd /etc/default
+  echo 'printf "%s\n" DAEMON_CONF="/etc/hostapd/hostapd.conf >> /etc/default/hostapd' | sudo su
   sudo apt-get purge wpasupplicant
-  echo 'printf "%s\n" net.ipv4.ip_forward=1 >> /etc/sysctl.conf' | sudo su
+ 	sudo sed -i "\$i net.ipv4.ip_forward=1" /etc/sysctl.conf
+
+#  echo 'printf "%s\n" net.ipv4.ip_forward=1 >> /etc/sysctl.conf' | sudo su
   sudo apt-get install dnsmasq
   sudo cp install_files/hostpad/etc/dnsmasq.conf /etc
 
