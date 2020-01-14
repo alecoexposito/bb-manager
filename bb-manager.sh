@@ -177,7 +177,7 @@ setup_hostpad() {
   echo 'printf "%s\n" net.ipv4.ip_forward=1 >> /etc/sysctl.conf' | sudo su
   sudo apt-get install dnsmasq
   sudo cp install_files/hostpad/etc/dnsmasq.conf /etc
-  
+
   sudo sh -c "echo 1 > /proc/sys/net/ipv4/ip_forward"
   sudo iptables -t nat -A POSTROUTING -o wwan0 -j MASQUERADE
   sudo iptables -A FORWARD -i wwan0 -o wlan0 -m state --state RELATED,ESTABLISHED -j ACCEPT
@@ -206,6 +206,10 @@ while getopts "hgamci:" opt; do
     m)	setup_modem
 		exit 0
 		;;
+    hostpad)
+      setup_hostpad
+      exit 0
+      ;;
     c)
 		add_camera
 		;;
