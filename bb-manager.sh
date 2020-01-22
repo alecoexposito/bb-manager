@@ -86,7 +86,7 @@ create_gps_folders() {
 
 initialize_gps_flow() {
 	cd ~/bb
-	echo "Select IMEI from here"
+	echo "Selecciona el IMEI"
 	sudo qmicli -d /dev/cdc-wdm0 --dms-get-ids
 
 	cp .env.default .env
@@ -96,6 +96,9 @@ initialize_gps_flow() {
 	read -p "Entre el ip del server donde está el tracker: " ip_tracker
 
 	sed -i 's:^[ \t]*TRACKER_IP[ \t]*=\([ \t]*.*\)$:TRACKER_IP='${ip_tracker}':' .env
+  api_url="http://${ip_tracker}:3007/api/v1"
+  sed -i 's@^[ \t]*API_URL[ \t]*=\([ \t]*.*\)$@API_URL='${api_url}'@' .env
+
 	echo "iniciando app bb"
 	pm2 start server.js
 	pm2 restart server
@@ -196,6 +199,10 @@ setup_hostpad() {
   sudo sh -c "iptables-save > /etc/iptables.ipv4.nat"
   echo 'Reiniciando...'
   sudo reboot
+}
+
+install_vpn() {
+	#update-rc.d openvpn disable to disable openvpn from starting automatically
 }
 
 # A POSIX variable
