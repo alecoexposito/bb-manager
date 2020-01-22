@@ -172,7 +172,7 @@ add_camera() {
 	mkdir /home/zurikato/video-backup/$id_camera
 	mkdir /home/zurikato/camera-local
 	echo 0 > /home/zurikato/camera-local/camera-$id_camera.jpg
-  echo 0 > /home/zurikato/camera-local/single-image.jpg
+  echo 0 > /home/zurikato/camera-local/single-camera.jpg
 	pm2 start --name record-video-$id_camera /usr/scripts/record-video.sh -- $id_camera $ip_camera
 	pm2 startup
 	sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u zurikato --hp /home/zurikato
