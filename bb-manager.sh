@@ -218,7 +218,7 @@ OPTIND=1         # Reset in case getopts has been used previously in the shell.
 # Initialize our own variables:
 output_file=""
 
-while getopts "hgamcniv:" opt; do
+while getopts "hgamcnvi:" opt; do
     case "$opt" in
     h)
         show_help
