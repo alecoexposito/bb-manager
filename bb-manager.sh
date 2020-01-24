@@ -202,7 +202,11 @@ setup_hostpad() {
 }
 
 install_vpn() {
-	#update-rc.d openvpn disable to disable openvpn from starting automatically
+	echo "instalando paquetes necesarios"
+	sudo apt-get install openvpn
+	sudo cp install_files/vpn/etc/sudoers.d/zurikato /etc/sudoers.d/zurikato
+	update-rc.d openvpn disable
+	echo "instalada la vpn, ahora debe copiar el fichero /etc/openvpn/strongvpn.conf"
 }
 
 # A POSIX variable
@@ -211,7 +215,7 @@ OPTIND=1         # Reset in case getopts has been used previously in the shell.
 # Initialize our own variables:
 output_file=""
 
-while getopts "hgamcni:" opt; do
+while getopts "hgamcniv:" opt; do
     case "$opt" in
     h)
         show_help
@@ -228,6 +232,10 @@ while getopts "hgamcni:" opt; do
 		;;
     n)
       setup_hostpad
+      exit 0
+      ;;
+    v)
+      install_vpn
       exit 0
       ;;
     c)
