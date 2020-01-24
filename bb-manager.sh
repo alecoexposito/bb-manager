@@ -208,7 +208,7 @@ install_vpn() {
 	echo "instalando paquetes necesarios"
 	sudo apt-get install openvpn
 	sudo cp install_files/vpn/etc/sudoers.d/zurikato /etc/sudoers.d/zurikato
-	update-rc.d openvpn disable
+	sudo update-rc.d openvpn disable
 	echo "instalada la vpn, ahora debe copiar el fichero /etc/openvpn/strongvpn.conf"
 }
 
