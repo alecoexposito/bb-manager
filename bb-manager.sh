@@ -183,7 +183,7 @@ setup_hostpad() {
 
   sudo cp install_files/hostpad/etc/network/interfaces /etc/network
  	read -p "Entre el ip: " ip_hostapd
-	sudo sed -i 's:^[ \t]*address[ \t]*=\([ \t]*.*\)$:address '${ip_hostapd}':' /etc/network/interfaces
+	sudo sed -i '0,/address/{s:^[ \t]*address[ \t]\([ \t]*.*\)$:address '${ip_hostapd}':}' /etc/network/interfaces
   sudo cp install_files/hostpad/etc/hostapd.conf /etc
  	read -p "Entre el SSID: " ssid
 	sudo sed -i 's:^[ \t]*ssid[ \t]*=\([ \t]*.*\)$:ssid='${ssid}':' /etc/hostapd.conf
@@ -200,8 +200,8 @@ setup_hostpad() {
   sudo iptables -A FORWARD -i wwan0 -o wlan0 -m state --state RELATED,ESTABLISHED -j ACCEPT
   sudo iptables -A FORWARD -i wlan0 -o wwan0 -j ACCEPT
   sudo sh -c "iptables-save > /etc/iptables.ipv4.nat"
-  echo 'Reiniciando...'
-  sudo reboot
+  # echo 'Reiniciando...'
+  # sudo reboot
 }
 
 install_vpn() {
