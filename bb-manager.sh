@@ -182,15 +182,11 @@ add_camera() {
 setup_hostpad() {
 
   sudo cp install_files/hostpad/etc/network/interfaces /etc/network
-  cd /etc/network
  	read -p "Entre el ip: " ip_hostapd
-	sed -i 's:^[ \t]*address[ \t]*=\([ \t]*.*\)$:address '${ip_hostapd}':' interfaces
-
+	sed -i 's:^[ \t]*address[ \t]*=\([ \t]*.*\)$:address '${ip_hostapd}':' /etc/network/interfaces
   sudo cp install_files/hostpad/etc/hostapd.conf /etc
-  cd /etc
  	read -p "Entre el SSID: " ssid
-	sed -i 's:^[ \t]*ssid[ \t]*=\([ \t]*.*\)$:ssid='${ssid}':' hostapd.conf
-
+	sed -i 's:^[ \t]*ssid[ \t]*=\([ \t]*.*\)$:ssid='${ssid}':' /etc/hostapd.conf
   echo 'printf "%s\n" DAEMON_CONF=\"/etc/hostapd.conf\" >> /etc/default/hostapd' | sudo su
   sudo apt-get purge wpasupplicant
  	sudo sed -i "\$i net.ipv4.ip_forward=1" /etc/sysctl.conf
