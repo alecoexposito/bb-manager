@@ -153,6 +153,7 @@ install_gps() {
 	install_gps_dependencies
 	create_gps_folders
 	initialize_gps_flow
+  line="@reboot sleep 15; pm2 restart server"
   (crontab -u zurikato -l; echo "$line" ) | crontab -u zurikato -
   echo "agregado restart pm2 en crontab de zurikato"
 }
