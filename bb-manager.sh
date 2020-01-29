@@ -91,10 +91,10 @@ initialize_gps_flow() {
 
 	cp .env.default .env
   sleep 2;
-	read -p "Entre el IMEI: " imei
+	read -p "Entre el IMEI: " imei < /dev/tty
 
 	sed -i 's:^[ \t]*DEVICE_IMEI[ \t]*=\([ \t]*.*\)$:DEVICE_IMEI='${imei}':' .env
-	read -p "Entre el ip del server donde esta el tracker: " ip_tracker
+	read -p "Entre el ip del server donde esta el tracker: " ip_tracker < /dev/tty
 
 	sed -i 's:^[ \t]*TRACKER_IP[ \t]*=\([ \t]*.*\)$:TRACKER_IP='${ip_tracker}':' .env
   api_url="http://${ip_tracker}:3007/api/v1"
@@ -104,7 +104,7 @@ initialize_gps_flow() {
 	pm2 start server.js
 	pm2 restart server
 	echo "Debe mirar en el admin para ver el id de la bb adicionada"
-	read -p "Entre el id de la bb: " bb_id
+	read -p "Entre el id de la bb: " bb_id < /dev/tty
 
 	pm2 stop server
 	sed -i 's:^[ \t]*DEVICE_ID[ \t]*=\([ \t]*.*\)$:DEVICE_ID='${bb_id}':' .env
@@ -171,8 +171,8 @@ install_full() {
 }
 
 add_camera() {
-	read -p "Entre el IP de la camara: " ip_camera
-	read -p "Entre el ID de la camara: " id_camera
+	read -p "Entre el IP de la camara: " ip_camera < /dev/tty
+	read -p "Entre el ID de la camara: " id_camera < /dev/tty
 	mkdir /home/zurikato/video-backup/$id_camera
 	mkdir /home/zurikato/camera-local
 	echo 0 > /home/zurikato/camera-local/camera-$id_camera.jpg
@@ -186,10 +186,10 @@ add_camera() {
 setup_hostpad() {
 
   sudo cp install_files/hostpad/etc/network/interfaces /etc/network
- 	read -p "Entre el ip: " ip_hostapd
+ 	read -p "Entre el ip: " ip_hostapd < /dev/tty
 	sudo sed -i '0,/address/{s:^[ \t]*address[ \t]\([ \t]*.*\)$:address '${ip_hostapd}':}' /etc/network/interfaces
   sudo cp install_files/hostpad/etc/hostapd.conf /etc
- 	read -p "Entre el SSID: " ssid
+ 	read -p "Entre el SSID: " ssid < /dev/tty
 	sudo sed -i 's:^[ \t]*ssid[ \t]*=\([ \t]*.*\)$:ssid='${ssid}':' /etc/hostapd.conf
   echo 'printf "%s\n" DAEMON_CONF=\"/etc/hostapd.conf\" >> /etc/default/hostapd' | sudo su
   sudo apt-get purge wpasupplicant
