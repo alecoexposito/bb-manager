@@ -153,6 +153,8 @@ install_gps() {
 	install_gps_dependencies
 	create_gps_folders
 	initialize_gps_flow
+  (crontab -u zurikato -l; echo "$line" ) | crontab -u zurikato -
+  echo "agregado restart pm2 en crontab de zurikato"
 }
 
 install_hazflix() {
