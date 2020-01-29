@@ -90,10 +90,11 @@ initialize_gps_flow() {
 	sudo qmicli -d /dev/cdc-wdm0 --dms-get-ids
 
 	cp .env.default .env
+  sleep 2;
 	read -p "Entre el IMEI: " imei
 
 	sed -i 's:^[ \t]*DEVICE_IMEI[ \t]*=\([ \t]*.*\)$:DEVICE_IMEI='${imei}':' .env
-	read -p "Entre el ip del server donde está el tracker: " ip_tracker
+	read -p "Entre el ip del server donde esta el tracker: " ip_tracker
 
 	sed -i 's:^[ \t]*TRACKER_IP[ \t]*=\([ \t]*.*\)$:TRACKER_IP='${ip_tracker}':' .env
   api_url="http://${ip_tracker}:3007/api/v1"
