@@ -12,6 +12,8 @@ show_help() {
 	echo "-a: Instalación del módulo de Haz Flix"
 	echo "-c: Adicionar una camara"
   echo "-n: Configurar hostpad"
+  echo "-v: Configurar vpn"
+  echo "-p: Configurar panic"
 }
 
 install_common_dependencies() {
@@ -216,13 +218,27 @@ install_vpn() {
 	echo "instalada la vpn, ahora debe copiar el fichero /etc/openvpn/strongvpn.conf"
 }
 
+install_panic() {
+  sudo apt-get install python-pip
+  sudo pip install setuptools
+  sudo pip install socketclusterclient
+  sudo git clone https://github.com/herzig/orangepi_PC_gpio_pyH5.git
+  sudo python /home/zurikato/panic/orangepi_PC_gpio_pyH5/setup.py install
+  cp install_files/panic/ /home/zurikato
+  sudo chmod 777 /home/zurikato/run-panic.sh
+	line="@reboot /home/zurikato/scripts/watchdog.sh"
+	(sudo crontab -u root -l; sudo echo "$line" ) | sudo crontab -u root -
+	echo "agregado el panic al crontab de root"
+
+}
+
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
 # Initialize our own variables:
 output_file=""
 
-while getopts "hgamcnvi:" opt; do
+while getopts "hgamcnvpi:" opt; do
     case "$opt" in
     h)
         show_help
@@ -243,6 +259,10 @@ while getopts "hgamcnvi:" opt; do
       ;;
     v)
       install_vpn
+      exit 0
+      ;;
+    p)
+      install_panic
       exit 0
       ;;
     c)
