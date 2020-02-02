@@ -112,6 +112,7 @@ initialize_gps_flow() {
 	sed -i 's:^[ \t]*DEVICE_ID[ \t]*=\([ \t]*.*\)$:DEVICE_ID='${bb_id}':' .env
 	pm2 start server
 	pm2 startup
+	sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u zurikato --hp /home/zurikato
 	pm2 save
 }
 
