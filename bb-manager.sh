@@ -111,7 +111,7 @@ initialize_gps_flow() {
 	pm2 stop server
 	sed -i 's:^[ \t]*DEVICE_ID[ \t]*=\([ \t]*.*\)$:DEVICE_ID='${bb_id}':' .env
 	pm2 start server
-	sudo pm2 startup
+	pm2 startup
 	pm2 save
 }
 
