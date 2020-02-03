@@ -232,6 +232,7 @@ install_panic() {
   line="@reboot sleep 10; /home/zurikato/panic/run-panic.sh"
   (sudo crontab -u root -l; sudo echo "$line" ) | sudo crontab -u root -
   echo "agregado el panic al crontab de root"
+  echo "Debe reiniciar para que los cambios tengan efecto"
 
 }
 
