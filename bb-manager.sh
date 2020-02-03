@@ -223,13 +223,15 @@ install_panic() {
   sudo apt-get install python-pip
   sudo pip install setuptools
   sudo pip install socketclusterclient
+  cp install_files/panic/ /home/zurikato
+  cd /home/zurikato/panic
   sudo git clone https://github.com/herzig/orangepi_PC_gpio_pyH5.git
   sudo python /home/zurikato/panic/orangepi_PC_gpio_pyH5/setup.py install
-  cp install_files/panic/ /home/zurikato
-  sudo chmod 777 /home/zurikato/run-panic.sh
-	line="@reboot /home/zurikato/scripts/watchdog.sh"
-	(sudo crontab -u root -l; sudo echo "$line" ) | sudo crontab -u root -
-	echo "agregado el panic al crontab de root"
+  cd /home/zurikato/bb-manager
+  sudo chmod +x /home/zurikato/panic/run-panic.sh
+  line="@reboot sleep 10; /home/zurikato/panic/run-panic.sh"
+  (sudo crontab -u root -l; sudo echo "$line" ) | sudo crontab -u root -
+  echo "agregado el panic al crontab de root"
 
 }
 
