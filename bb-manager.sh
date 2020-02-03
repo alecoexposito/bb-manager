@@ -226,7 +226,8 @@ install_panic() {
   cp install_files/panic/ /home/zurikato -r
   cd /home/zurikato/panic
   sudo git clone https://github.com/herzig/orangepi_PC_gpio_pyH5.git
-  sudo python /home/zurikato/panic/orangepi_PC_gpio_pyH5/setup.py install
+  cd /home/zurikato/panic/orangepi_PC_gpio_pyH5
+  sudo python setup.py install
   cd /home/zurikato/bb-manager
   sudo chmod +x /home/zurikato/panic/run-panic.sh
   line="@reboot sleep 10; /home/zurikato/panic/run-panic.sh"
