@@ -11,9 +11,9 @@ show_help() {
 	echo "-g: Instalación del módulo GPS"
 	echo "-a: Instalación del módulo de Haz Flix"
 	echo "-c: Adicionar una camara"
-  echo "-n: Configurar hostpad"
-  echo "-v: Configurar vpn"
-  echo "-p: Configurar panic"
+  	echo "-n: Configurar hostpad"
+  	echo "-v: Configurar vpn"
+  	echo "-p: Configurar panic"
 }
 
 install_common_dependencies() {
@@ -189,14 +189,14 @@ add_camera() {
 setup_hostpad() {
 
   sudo cp install_files/hostpad/etc/network/interfaces /etc/network
- 	read -p "Entre el ip: " ip_hostapd < /dev/tty
-	sudo sed -i '0,/address/{s:^[ \t]*address[ \t]\([ \t]*.*\)$:address '${ip_hostapd}':}' /etc/network/interfaces
+  read -p "Entre el ip: " ip_hostapd < /dev/tty
+  sudo sed -i '0,/address/{s:^[ \t]*address[ \t]\([ \t]*.*\)$:address '${ip_hostapd}':}' /etc/network/interfaces
   sudo cp install_files/hostpad/etc/hostapd.conf /etc
- 	read -p "Entre el SSID: " ssid < /dev/tty
-	sudo sed -i 's:^[ \t]*ssid[ \t]*=\([ \t]*.*\)$:ssid='${ssid}':' /etc/hostapd.conf
+  read -p "Entre el SSID: " ssid < /dev/tty
+  sudo sed -i 's:^[ \t]*ssid[ \t]*=\([ \t]*.*\)$:ssid='${ssid}':' /etc/hostapd.conf
   echo 'printf "%s\n" DAEMON_CONF=\"/etc/hostapd.conf\" >> /etc/default/hostapd' | sudo su
   sudo apt-get purge wpasupplicant
- 	sudo sed -i "\$i net.ipv4.ip_forward=1" /etc/sysctl.conf
+  sudo sed -i "\$i net.ipv4.ip_forward=1" /etc/sysctl.conf
 
 #  echo 'printf "%s\n" net.ipv4.ip_forward=1 >> /etc/sysctl.conf' | sudo su
   sudo apt-get install dnsmasq
@@ -216,6 +216,14 @@ install_vpn() {
 	sudo apt-get install openvpn
 	sudo cp install_files/vpn/etc/sudoers.d/zurikato /etc/sudoers.d/zurikato
 	sudo update-rc.d openvpn disable
+
+	echo "Adicionando IP Tables"
+	sudo sh -c "echo 1 > /proc/sys/net/ipv4/ip_forward"
+	sudo iptables -t nat -A POSTROUTING -o tun0 -j MASQUERADE
+	sudo iptables -A FORWARD -i tun0 -o wlan0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+	sudo iptables -A FORWARD -i wlan0 -o tun0 -j ACCEPT
+	sudo sh -c "iptables-save > /etc/iptables.ipv4.nat"
+
 	echo "instalada la vpn, ahora debe copiar el fichero /etc/openvpn/strongvpn.conf"
 }
 
