@@ -211,7 +211,7 @@ setup_hostpad() {
 
   sudo apt-get install ntp
   sudo apt-get install ntpdate
-  sudo cp install_files/hostapd/etc/ntp.conf /etc
+  sudo cp install_files/hostpad/etc/ntp.conf /etc
   sudo service ntp restart
   # echo 'Reiniciando...'
   # sudo reboot
