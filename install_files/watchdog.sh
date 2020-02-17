@@ -3,7 +3,7 @@
 date
 
 IP='69.64.32.172'
-if ping -c 1 $IP &> /dev/null
+if ping -c 1 -I wwan0 $IP &> /dev/null
 then
   echo "Conectado"
 else
