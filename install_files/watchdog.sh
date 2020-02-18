@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-dateo
+date
 
 echo "************ coordenadas gps ************"
 date
