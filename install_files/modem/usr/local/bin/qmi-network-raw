@@ -332,7 +332,7 @@ start_network ()
         exit 3
     fi
 
-    echo Y > /sys/class/net/wwan0/qmi/raw_ip 
+    echo Y > /sys/class/net/wwan0/qmi/raw_ip
 
     setup_data_format
 
@@ -344,7 +344,7 @@ start_network ()
         fi
     fi
 
-    START_NETWORK_CMD="qmicli -d $DEVICE --device-open-net=net-raw-ip|net-no-qos-header --wds-start-network=$START_NETWORK_ARGS $USE_PREVIOUS_CID --client-no-release-cid $PROXY_OPT"
+    START_NETWORK_CMD="qmicli -d $DEVICE --device-open-net=net-raw-ip|net-no-qos-header --wds-start-network=$START_NETWORK_ARGS $USE_PREVIOUS_CID $PROXY_OPT"
     echo "Starting network with '$START_NETWORK_CMD'..."
 
     if [ -n "$QMIDEBUG" ]; then
@@ -414,7 +414,7 @@ stop_network ()
 packet_service_status ()
 {
     if [ -n "$CID" ]; then
-        USE_PREVIOUS_CID="--client-cid=$CID --client-no-release-cid"
+        USE_PREVIOUS_CID="--client-cid=$CID"
     fi
 
     STATUS_CMD="qmicli -d $DEVICE --wds-get-packet-service-status $USE_PREVIOUS_CID $PROXY_OPT"
