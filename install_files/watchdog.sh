@@ -2,18 +2,36 @@
 
 date
 
-IP='69.64.32.172'
-if ping -c 1 -I wwan0 $IP &> /dev/null
-then
-  echo "Conectado"
-else
-  echo "Desconectado, levantando la red de nuevo"
-  echo "Corriendo ifdown wwan0"
-  /sbin/ifdown wwan0
-  sleep 1
-  echo "Corriendo ifup wwan0"
-  /sbin/ifup wwan0
-fi
+echo "--------------- coordenadas gps ---------------"
+
+qmicli -d /dev/cdc-wdm0 --loc-get-position-report 2>&1 | head -n 3
+
+echo "--------------- intensidad de la sennal -------"
+
+qmicli -d /dev/cdc-wdm0 --nas-get-signal-strength
+
+echo "--------------- estado de la conexion --------------"
+
+qmicli -d /dev/cdc-wdm0 --wds-get-packet-service-status
+
+echo "--------------- ping to server ----------------"
+
+ping -c 4 -I wwan0 69.64.32.172
+
+
+
+# IP='69.64.32.172'
+# if ping -c 1 -I wwan0 $IP &> /dev/null
+# then
+#   echo "Conectado"
+# else
+#   echo "Desconectado, levantando la red de nuevo"
+#   echo "Corriendo ifdown wwan0"
+#   /sbin/ifdown wwan0
+#   sleep 1
+#   echo "Corriendo ifup wwan0"
+#   /sbin/ifup wwan0
+# fi
 
 # OUTPUT="$(qmicli -d /dev/cdc-wdm0 --nas-get-signal-strength)"
 # echo "${OUTPUT}"
