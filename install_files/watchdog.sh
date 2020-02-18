@@ -2,22 +2,22 @@
 
 date
 
-echo "--------------- coordenadas gps ---------------"
-
+echo "************ coordenadas gps ************"
+date
 qmicli -d /dev/cdc-wdm0 --loc-get-position-report 2>&1 | head -n 3
-
-echo "--------------- intensidad de la sennal -------"
-
+date
+echo "************ intensidad de la sennal ************"
+date
 qmicli -d /dev/cdc-wdm0 --nas-get-signal-strength 2>&1
-
-echo "--------------- estado de la conexion --------------"
-
+date
+echo "************ estado de la conexion ************"
+date
 qmicli -d /dev/cdc-wdm0 --wds-get-packet-service-status 2>&1
-
-echo "--------------- ping to server ----------------"
-
+date
+echo "************ ping to server *************"
+date
 ping -c 4 -I wwan0 69.64.32.172
-
+date
 
 
 # IP='69.64.32.172'
@@ -56,4 +56,4 @@ ping -c 4 -I wwan0 69.64.32.172
 
 # ping -I wwan0 www.google.com -c 4
 
-echo '******************************************************'
+echo '*********************************************************************************'
