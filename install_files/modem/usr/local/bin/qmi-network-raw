@@ -222,7 +222,7 @@ setup_data_format ()
 
     # Read link layer protocol setup in the device
 
-    DEVICE_DATA_FORMAT_CMD="qmicli -d $DEVICE --wda-get-data-format $PROXY_OPT"
+    DEVICE_DATA_FORMAT_CMD="qmicli -p -d $DEVICE --wda-get-data-format $PROXY_OPT"
     echo "Checking data format with '$DEVICE_DATA_FORMAT_CMD'..."
     if [ -n "$QMIDEBUG" ]; then
         DEVICE_DATA_FORMAT_OUT="\
@@ -252,7 +252,7 @@ Downlink data aggregation max size: '0'"
 
     # Read link layer protocol setup in the kernel
 
-    EXPECTED_DATA_FORMAT_CMD="qmicli -d $DEVICE --get-expected-data-format"
+    EXPECTED_DATA_FORMAT_CMD="qmicli -p -d $DEVICE --get-expected-data-format"
     echo "Getting expected data format with '$EXPECTED_DATA_FORMAT_CMD'..."
     if [ -n "$QMIDEBUG" ]; then
         EXPECTED_LLP="raw-ip"
@@ -281,7 +281,7 @@ Downlink data aggregation max size: '0'"
     fi
 
     if [ $RUN_WDA -eq 1 ]; then
-        DEVICE_DATA_FORMAT_SET_CMD="qmicli -d $DEVICE --wda-set-data-format=$EXPECTED_LLP $PROXY_OPT"
+        DEVICE_DATA_FORMAT_SET_CMD="qmicli -p -d $DEVICE --wda-set-data-format=$EXPECTED_LLP $PROXY_OPT"
         echo "Updating device link layer protocol with '$DEVICE_DATA_FORMAT_SET_CMD'..."
         if [ -n "$QMIDEBUG" ]; then
             DEVICE_DATA_FORMAT_SET_OUT="\
@@ -304,7 +304,7 @@ Downlink data aggregation max datagrams: '0'
             echo "New device link layer protocol retrieved: $LLP"
         fi
     else
-        EXPECTED_DATA_FORMAT_SET_CMD="qmicli -d $DEVICE --set-expected-data-format=$DEVICE_LLP"
+        EXPECTED_DATA_FORMAT_SET_CMD="qmicli -p -d $DEVICE --set-expected-data-format=$DEVICE_LLP"
         echo "Updating kernel link layer protocol with '$EXPECTED_DATA_FORMAT_SET_CMD'..."
         EXPECTED_DATA_FORMAT_SET_OUT=`$EXPECTED_DATA_FORMAT_SET_CMD`
         if [ $? -eq 0 ]; then
@@ -344,7 +344,7 @@ start_network ()
         fi
     fi
 
-    START_NETWORK_CMD="qmicli -d $DEVICE --device-open-net=net-raw-ip|net-no-qos-header --wds-start-network=$START_NETWORK_ARGS $USE_PREVIOUS_CID --client-no-release-cid $PROXY_OPT"
+    START_NETWORK_CMD="qmicli -p -d $DEVICE --device-open-net=net-raw-ip|net-no-qos-header --wds-start-network=$START_NETWORK_ARGS $USE_PREVIOUS_CID --client-no-release-cid $PROXY_OPT"
     echo "Starting network with '$START_NETWORK_CMD'..."
 
     if [ -n "$QMIDEBUG" ]; then
@@ -373,7 +373,7 @@ start_network ()
     if [ -z "$PDH" ]; then
         echo "error: network start failed, no packet data handle" 1>&2
         # Cleanup the client
-        qmicli -d "$DEVICE" --wds-noop --client-cid="$CID" $PROXY_OPT
+        qmicli -p -d "$DEVICE" --wds-noop --client-cid="$CID" $PROXY_OPT
         clear_state
         exit 2
     else
@@ -391,9 +391,9 @@ stop_network ()
     elif [ -z "$PDH" ]; then
         echo "Network already stopped; need to cleanup CID $CID"
         # Cleanup the client
-        qmicli -d "$DEVICE" --wds-noop --client-cid="$CID" $PROXY_OPT
+        qmicli -p -d "$DEVICE" --wds-noop --client-cid="$CID" $PROXY_OPT
     else
-        STOP_NETWORK_CMD="qmicli -d $DEVICE --wds-stop-network=$PDH --client-cid=$CID $PROXY_OPT"
+        STOP_NETWORK_CMD="qmicli -p -d $DEVICE --wds-stop-network=$PDH --client-cid=$CID $PROXY_OPT"
         echo "Stopping network with '$STOP_NETWORK_CMD'..."
 
         if [ -n "$QMIDEBUG" ]; then
@@ -417,7 +417,7 @@ packet_service_status ()
         USE_PREVIOUS_CID="--client-cid=$CID --client-no-release-cid"
     fi
 
-    STATUS_CMD="qmicli -d $DEVICE --wds-get-packet-service-status $USE_PREVIOUS_CID $PROXY_OPT"
+    STATUS_CMD="qmicli -p -d $DEVICE --wds-get-packet-service-status $USE_PREVIOUS_CID $PROXY_OPT"
     echo "Getting status with '$STATUS_CMD'..."
 
     if [ -n "$QMIDEBUG" ]; then

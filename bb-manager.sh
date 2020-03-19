@@ -81,7 +81,7 @@ create_gps_folders() {
 	echo "activando gps"
 	cd ~/scripts
 	echo "Adicionando linea para activar gps en /etc/rc.local"
-	sudo sed -i "\$i python /home/zurikato/scripts/at-command.py AT+QGPS=1" /etc/rc.local
+	sudo sed -i "\$i python /home/zurikato/scripts/at-command.py AT+QGPS=1 &" /etc/rc.local
 	echo "Activando GPS ahora"
 	python at-command.py AT+QGPS=1
 }
