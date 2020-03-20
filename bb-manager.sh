@@ -71,9 +71,9 @@ create_gps_folders() {
 	echo copiando base de datos sqlite
 	cp ~/bb/data/bb.sqlite ~/.db
 	echo copiando scripts
-	cp ~/bb/scripts ~/ -r
+	cp install_files/scripts ~/ -r
 	sudo mkdir /usr/scripts
-	sudo cp ~/bb/scripts/* /usr/scripts
+	sudo cp install_files/scripts/* /usr/scripts
 	sudo chmod 777 /usr/scripts -R
 	cd ~/scripts
 	#wget https://github.com/alecoexposito/bb-watchdog/raw/master/classes/main.py -O bb-watchdog.py
@@ -140,14 +140,34 @@ setup_modem() {
 	sudo cp install_files/modem/usr/local/bin/qmi-network-raw /usr/local/bin/
 	echo "starting modem"
 	sudo /sbin/ifdown wwan0
-	sleep 1
+	sleep 3
 	sudo /sbin/ifup wwan0
+  echo "copiando scripts"
 	mkdir /home/zurikato/scripts
-	sudo cp install_files/watchdog.sh /home/zurikato/scripts/
+	sudo cp install_files/scripts/ /home/zurikato/scripts/ -r
 	sudo chmod +x /home/zurikato/scripts/watchdog.sh
-	line="* * * * * /home/zurikato/scripts/watchdog.sh >> /var/log/watchdog.log"
+	sudo chmod +x /home/zurikato/scripts/at-command.py
+
+	line="*/2 * * * * /home/zurikato/scripts/watchdog.sh >> /var/log/watchdog.log; /bin/sync /root/log/watchdog.log; /bin/sync"
 	(sudo crontab -u root -l; sudo echo "$line" ) | sudo crontab -u root -
 	echo "agregado watchdog al crontab de root"
+
+  setup_restart
+
+}
+
+setup_restart() {
+  echo "configurando para que reinicie por admin y por sms"
+	sudo chmod +x /home/zurikato/scripts/restart-bb.py
+	LINE_REBOOT="@reboot sleep 10; /usr/bin/python /home/zurikato/scripts/restart-bb.py &"
+	(sudo crontab -u root -l; sudo echo "$LINE_REBOOT" ) | sudo crontab -u root -
+	echo "agregado restart al crontab de root para reiniciar desde admin"
+
+  echo "instalando smstools"
+  sudo apt-get install smstools
+	sudo chmod +x /home/zurikato/scripts/receive-message.sh
+
+  sudo cp install_files/restart/smsd.conf /etc/smsd.conf
 }
 
 

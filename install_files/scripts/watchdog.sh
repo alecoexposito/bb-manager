@@ -3,7 +3,7 @@
 
 LOCK_FILE=/var/lock/bb-watchdog.lock
 if test -f $LOCK_FILE; then
-  echo "si esta"
+  exit
 fi
 
 date
@@ -13,7 +13,10 @@ echo 0 > /var/lock/bb-watchdog.lock
 
 echo "************ coordenadas gps ************"
 date
-qmicli -p -d /dev/cdc-wdm0 --loc-get-position-report 2>&1 | head -n 3
+COORDS=$(qmicli -p -d /dev/cdc-wdm0 --loc-get-position-report 2>&1 | head -n 3)
+LAT=$(echo $COORDS | sed -n "s/^.*latitude:\s*\(\S*\).*$/\1/p")
+LNG=$(echo $COORDS | sed -n "s/^.*longitude:\s*\(\S*\).*$/\1/p")
+echo "$LAT, $LNG"
 date
 sleep 1
 echo "************ intensidad de la sennal ************"
@@ -43,26 +46,37 @@ then
   then
     echo "el modem está en un estado bloqueado, reiniciando..."
     echo "corriendo comando at AT+CFUN=1,1"
-    /usr/bin/python at-command.py AT+CFUN=1,1 $MODEM_PORT
-    sleep 1
+    /usr/bin/python /home/zurikato/scripts/at-command.py AT+CFUN=1,1 $MODEM_PORT
+    sleep 3
     echo "activando gps"
     /usr/bin/python /home/zurikato/scripts/at-command.py AT+QGPS=1 $MODEM_PORT
-    sleep 1
+    sleep 3
   fi
+  echo "corriendo el stop bajo protesta"
+  /usr/local/bin/qmi-network-raw /dev/cdc-wdm0 stop
+  sleep 3
   echo "Corriendo ifdown wwan0"
   /sbin/ifdown wwan0
-  sleep 1
+  sleep 3
   echo "Corriendo ifup wwan0"
   /sbin/ifup wwan0
+  sleep 3
+  /usr/bin/python /home/zurikato/scripts/at-command.py AT+QGPS=1 $MODEM_PORT
+
 else
   if ! ping -c 1 -I wwan0 $IP &> /dev/null
   then
     echo "Ping no responde"
+    echo "corriendo el stop bajo protesta"
+    /usr/local/bin/qmi-network-raw /dev/cdc-wdm0 stop
+    sleep 3
     echo "Corriendo ifdown wwan0"
     /sbin/ifdown wwan0
-    sleep 1
+    sleep 3
     echo "Corriendo ifup wwan0"
     /sbin/ifup wwan0
+    sleep 3
+    /usr/bin/python /home/zurikato/scripts/at-command.py AT+QGPS=1 $MODEM_PORT
   fi
 fi
 
