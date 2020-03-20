@@ -144,7 +144,7 @@ setup_modem() {
 	sudo /sbin/ifup wwan0
   echo "copiando scripts"
 	mkdir /home/zurikato/scripts
-	sudo cp install_files/scripts/ /home/zurikato/scripts/ -r
+	sudo cp install_files/scripts/ /home/zurikato/ -r
 	sudo chmod +x /home/zurikato/scripts/watchdog.sh
 	sudo chmod +x /home/zurikato/scripts/at-command.py
 
