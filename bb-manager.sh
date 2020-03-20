@@ -131,6 +131,8 @@ create_hazflix_folders() {
 setup_modem() {
 	echo "copying modem files"
 
+	install_common_dependencies
+
 	sudo apt-get install libqmi-utils udhcpc
 	# sudo apt-get install perl
 	# sudo cpan install Device::Modem
