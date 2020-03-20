@@ -70,8 +70,8 @@ create_gps_folders() {
 	mkdir ~/.db
 	echo copiando base de datos sqlite
 	cp ~/bb/data/bb.sqlite ~/.db
-	echo copiando scripts
-	cp install_files/scripts ~/ -r
+	# echo "copiando scripts"
+	# sudo cp /home/zurikato/bb-manager/install_files/scripts /home/zurikato -r
 	sudo mkdir /usr/scripts
 	sudo cp install_files/scripts/* /usr/scripts
 	sudo chmod 777 /usr/scripts -R
@@ -80,10 +80,6 @@ create_gps_folders() {
 	#sudo cp bb-watchdog.py /usr/scripts/bb-watchdog.py
 	echo "activando gps"
 	cd ~/scripts
-	echo "Adicionando linea para activar gps en /etc/rc.local"
-	sudo sed -i "\$i python /home/zurikato/scripts/at-command.py AT+QGPS=1 &" /etc/rc.local
-	echo "Activando GPS ahora"
-	python at-command.py AT+QGPS=1
 }
 
 initialize_gps_flow() {
@@ -149,6 +145,11 @@ setup_modem() {
 	sudo cp install_files/scripts/ /home/zurikato/ -r
 	sudo chmod +x /home/zurikato/scripts/watchdog.sh
 	sudo chmod +x /home/zurikato/scripts/at-command.py
+  MODEM_PORT='serial/by-id/usb-Android_Android-if02-port0'
+	echo "Adicionando linea para activar gps en /etc/rc.local"
+	sudo sed -i "\$i /usr/bin/python /home/zurikato/scripts/at-command.py AT+QGPS=1 $MODEM_PORT &" /etc/rc.local
+	echo "Activando GPS ahora"
+	/usr/bin/python /home/zurikato/scripts/at-command.py AT+QGPS=1 $MODEM_PORT
 
   sudo mkdir /root/log
 	line="*/2 * * * * /home/zurikato/scripts/watchdog.sh >> /root/log/watchdog.log; /bin/sync /root/log/watchdog.log; /bin/sync"
