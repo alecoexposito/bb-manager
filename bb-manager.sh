@@ -78,7 +78,7 @@ create_gps_folders() {
 	cd ~/scripts
 	#wget https://github.com/alecoexposito/bb-watchdog/raw/master/classes/main.py -O bb-watchdog.py
 	#sudo cp bb-watchdog.py /usr/scripts/bb-watchdog.py
-	echo "activando gps"
+	# echo "activando gps"
 	cd ~/scripts
 }
 
