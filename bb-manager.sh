@@ -148,6 +148,7 @@ setup_modem() {
 	sudo chmod +x /home/zurikato/scripts/watchdog.sh
 	sudo chmod +x /home/zurikato/scripts/at-command.py
 
+  sudo mkdir /root/log
 	line="*/2 * * * * /home/zurikato/scripts/watchdog.sh >> /root/log/watchdog.log; /bin/sync /root/log/watchdog.log; /bin/sync"
 	(sudo crontab -u root -l; sudo echo "$line" ) | sudo crontab -u root -
 	echo "agregado watchdog al crontab de root"
