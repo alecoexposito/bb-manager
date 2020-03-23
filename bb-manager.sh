@@ -177,6 +177,11 @@ setup_restart() {
 
 
 install_gps() {
+  if ! ping -c 1 www.google.com &> /dev/null;
+  then
+    echo "No hay conexion a internet. Abortando..."
+    exit
+  fi
 	install_common_dependencies
 	install_gps_dependencies
 	create_gps_folders
