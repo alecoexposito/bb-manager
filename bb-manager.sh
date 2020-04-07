@@ -296,15 +296,29 @@ install_panic() {
   sudo pip install setuptools
   sudo pip install socketclusterclient
   cp install_files/panic/ /home/zurikato -r
-  cd /home/zurikato/panic
-  sudo git clone https://github.com/herzig/orangepi_PC_gpio_pyH5.git
-  cd /home/zurikato/panic/orangepi_PC_gpio_pyH5
-  sudo python setup.py install
+  # cd /home/zurikato/panic
+  # sudo git clone https://github.com/herzig/orangepi_PC_gpio_pyH5.git
+  # cd /home/zurikato/panic/orangepi_PC_gpio_pyH5
+  # sudo python setup.py install
   cd /home/zurikato/bb-manager
   sudo chmod +x /home/zurikato/panic/run-panic.sh
-  line="@reboot sleep 10; /home/zurikato/panic/run-panic.sh"
+  read -p "Entre el numero del puerto GPIO para el panico: " -i "107" -e panic_gpio < /dev/tty
+
+  line="@reboot sleep 10; /home/zurikato/panic/run-panic.sh ${panic_gpio}"
   (sudo crontab -u root -l; sudo echo "$line" ) | sudo crontab -u root -
   echo "agregado el panic al crontab de root"
+  echo "Debe reiniciar para que los cambios tengan efecto"
+  install_gpio_poweroff
+
+}
+
+install_gpio_poweroff() {
+  sudo chmod +x /home/zurikato/scripts/gpio-shutdown.py
+  read -p "Entre el numero del puerto GPIO para el apagado: " -i "6" -e shutdown_gpio < /dev/tty
+
+  line="@reboot sleep 10; /home/zurikato/scripts/gpio-shutdown.py ${shutdown_gpio}"
+  (sudo crontab -u root -l; sudo echo "$line" ) | sudo crontab -u root -
+  echo "agregado el apagado por gpio al crontab de root"
   echo "Debe reiniciar para que los cambios tengan efecto"
 
 }
