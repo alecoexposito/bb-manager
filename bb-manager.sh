@@ -158,6 +158,35 @@ setup_modem() {
 
   setup_restart
 
+  setup_sync_modem_date
+
+  # setup_gpsd
+
+}
+
+setup_sync_modem_date() {
+  cp install_files/scripts/sync-time.py /home/zurikato/scripts/
+
+	line="@reboot /usr/bin/python3 /home/zurikato/scripts/sync-time.py >> /var/log/sync-time.log"
+	(sudo crontab -u root -l; sudo echo "$line" ) | sudo crontab -u root -
+
+	line="*/5 * * * *  /usr/bin/python3 /home/zurikato/scripts/sync-time.py >> /var/log/sync-time.log"
+	(sudo crontab -u root -l; sudo echo "$line" ) | sudo crontab -u root -
+	echo "agregado sync-time al crontab de root"
+
+}
+
+setup_gpsd() {
+  echo "instalando gpsd para sincronizar la hora por gps"
+  sudo apt-get install gpsd
+  sudo cp install_files/modem/etc/ntp.conf /etc/ntp.conf
+  sudo cp install_files/modem/etc/default/gpsd /etc/default/gpsd
+  echo "reiniciando servicio ntp"
+  sudo service ntp restart
+  echo "reiniciando servicio gpsd"
+  sudo service gpsd restart
+  echo "estado del servicio gpsd"
+  sudo service gpsd status
 }
 
 setup_restart() {

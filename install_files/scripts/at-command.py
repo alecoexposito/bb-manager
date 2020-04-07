@@ -11,4 +11,3 @@ with serial.serial_for_url('/dev/' + sys.argv[2], 115200, timeout=4) as s:
     print(line)
     line = s.readline()
     print(line)
-    serial.close()

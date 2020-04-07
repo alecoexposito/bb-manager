@@ -47,7 +47,7 @@ then
     echo "el modem está en un estado bloqueado, reiniciando..."
     echo "corriendo comando at AT+CFUN=1,1"
     /usr/bin/python /home/zurikato/scripts/at-command.py AT+CFUN=1,1 $MODEM_PORT
-    sleep 3
+    sleep 10
     echo "activando gps"
     /usr/bin/python /home/zurikato/scripts/at-command.py AT+QGPS=1 $MODEM_PORT
     sleep 3
@@ -61,7 +61,6 @@ then
   echo "Corriendo ifup wwan0"
   /sbin/ifup wwan0
   sleep 3
-  /usr/bin/python /home/zurikato/scripts/at-command.py AT+QGPS=1 $MODEM_PORT
 
 else
   if ! ping -c 1 -I wwan0 $IP &> /dev/null
@@ -76,7 +75,6 @@ else
     echo "Corriendo ifup wwan0"
     /sbin/ifup wwan0
     sleep 3
-    /usr/bin/python /home/zurikato/scripts/at-command.py AT+QGPS=1 $MODEM_PORT
   fi
 fi
 
