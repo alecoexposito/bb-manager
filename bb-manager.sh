@@ -301,10 +301,16 @@ install_panic() {
   # cd /home/zurikato/panic/orangepi_PC_gpio_pyH5
   # sudo python setup.py install
   cd /home/zurikato/bb-manager
+	echo "Selecciona el IMEI"
+	sudo qmicli -d /dev/cdc-wdm0 --dms-get-ids
+  imei_tmp=$(sudo qmicli -d /dev/cdc-wdm0 --dms-get-ids | grep -Po 'IMEI:.+' | cut -d \' -f 2)
+	sleep 2;
+	read -p "Entre el IMEI: " -i $imei_tmp -e imei < /dev/tty
+
   sudo chmod +x /home/zurikato/panic/run-panic.sh
   read -p "Entre el numero del puerto GPIO para el panico: " -i "107" -e panic_gpio < /dev/tty
 
-  line="@reboot sleep 10; /home/zurikato/panic/run-panic.sh ${panic_gpio}"
+  line="@reboot sleep 10; /home/zurikato/panic/run-panic.sh ${panic_gpio} ${imei}"
   (sudo crontab -u root -l; sudo echo "$line" ) | sudo crontab -u root -
   echo "agregado el panic al crontab de root"
   echo "Debe reiniciar para que los cambios tengan efecto"
