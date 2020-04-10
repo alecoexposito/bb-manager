@@ -58,6 +58,7 @@ create_gps_folders() {
 	echo "creando carpetas y ficheros para gps"
 	cd ~
 	echo clonando el proyecto
+	git config --global http.sslverify false
 	git clone https://github.com/alecoexposito/bb.git
 	cd ~/bb
 	echo corriendo npm install
@@ -149,7 +150,7 @@ setup_modem() {
 	echo "Adicionando linea para activar gps en /etc/rc.local"
 	sudo sed -i "\$i /usr/bin/python /home/zurikato/scripts/at-command.py AT+QGPS=1 $MODEM_PORT &" /etc/rc.local
 	echo "Activando GPS ahora"
-	/usr/bin/python /home/zurikato/scripts/at-command.py AT+QGPS=1 $MODEM_PORT
+	sudo /usr/bin/python /home/zurikato/scripts/at-command.py AT+QGPS=1 $MODEM_PORT
 
   sudo mkdir /root/log
 	line="*/2 * * * * /home/zurikato/scripts/watchdog.sh >> /root/log/watchdog.log; /bin/sync /root/log/watchdog.log; /bin/sync"
@@ -165,6 +166,7 @@ setup_modem() {
 }
 
 setup_sync_modem_date() {
+  sudo chmod 777 /home/zurikato/scripts -R
   cp install_files/scripts/sync-time.py /home/zurikato/scripts/
 
 	line="@reboot /usr/bin/python3 /home/zurikato/scripts/sync-time.py >> /var/log/sync-time.log"
