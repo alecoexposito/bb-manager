@@ -14,6 +14,7 @@ show_help() {
   	echo "-n: Configurar hostpad"
   	echo "-v: Configurar vpn"
   	echo "-p: Configurar panic"
+	echo "-t Configurar obtener actualizar la hora del sistema operativo obteniendola del modem"
 }
 
 install_common_dependencies() {
@@ -159,15 +160,13 @@ setup_modem() {
 
   setup_restart
 
-  setup_sync_modem_date
-
   # setup_gpsd
 
 }
 
 setup_sync_modem_date() {
-  sudo chmod 777 /home/zurikato/scripts -R
-  cp install_files/scripts/sync-time.py /home/zurikato/scripts/
+	sudo chmod 777 /home/zurikato/scripts -R
+	cp install_files/scripts/sync-time.py /home/zurikato/scripts/
 
 	line="@reboot /usr/bin/python3 /home/zurikato/scripts/sync-time.py >> /var/log/sync-time.log"
 	(sudo crontab -u root -l; sudo echo "$line" ) | sudo crontab -u root -
@@ -337,7 +336,7 @@ OPTIND=1         # Reset in case getopts has been used previously in the shell.
 # Initialize our own variables:
 output_file=""
 
-while getopts "hgamcnvpi:" opt; do
+while getopts "hgamcnvpt	i:" opt; do
     case "$opt" in
     h)
         show_help
@@ -364,6 +363,10 @@ while getopts "hgamcnvpi:" opt; do
       install_panic
       exit 0
       ;;
+	t)
+	  setup_sync_modem_date
+	  exit 0
+	  ;;
     c)
 		add_camera
 		;;
