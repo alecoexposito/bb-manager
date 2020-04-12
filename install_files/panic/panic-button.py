@@ -20,7 +20,7 @@ logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO, file
 
 #led = port.PA1    # This is the same as port.PH2
 port = sys.argv[1] # debe ser 107
-imei = sys.argv[2]
+imei = str(sys.argv[2])
 error_sending = False;
 os.system("echo \"" + str(port) + "\" > /sys/class/gpio/export")
 os.system("echo \"in\" > /sys/class/gpio/gpio" + str(port) + "/direction")
@@ -100,8 +100,10 @@ def channelmessage(key, object):
 def send_panic_to_server():
     global socket
     print ("going to send")
+    logging.info("going to send")
     socket.publish('alarms_' + str(imei), {'imei': str(imei)})
     print ("already sent")
+    logging.info("already sent")
 
 def send_ping_to_server():
     global socket
@@ -109,6 +111,7 @@ def send_ping_to_server():
     socket.publish('alarms_' + str(imei), {'ping': '1'})
     socket.publish('alarms_' + str(imei), {'ping': '1'})
     print ("pings sent to server")
+    logging.info("pings sent to server")
 
 try:
   init_socket()
