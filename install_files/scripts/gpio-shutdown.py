@@ -46,7 +46,7 @@ def init_gpio():
         logging.info(state)
         if(state == -1):
           continue
-        if state == "0":
+        if state == "0\n":
                 print("powering off...")
                 logging.info("powering off...")
                 shutdown()
