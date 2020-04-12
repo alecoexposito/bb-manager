@@ -17,7 +17,7 @@ if not os.getegid() == 0:
 
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO, filename='/var/log/gpio-poweroff.log')
 
-port = sys.argv[1] #debe ser 6
+port = str(sys.argv[1]) #debe ser 6
 """Init gpio module"""
 
 error_sending = False;
