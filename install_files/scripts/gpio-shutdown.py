@@ -41,7 +41,7 @@ def init_gpio():
         # time.sleep(2)
         # continue
         counter = counter + 1
-        state = get_value(port)
+        state = get_value()
         print (state)
         logging.info(state)
         if(state == -1):
