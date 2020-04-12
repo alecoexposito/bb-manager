@@ -22,7 +22,7 @@ logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO, file
 port = sys.argv[1] # debe ser 107
 imei = sys.argv[2]
 error_sending = False;
-os.system("echo \"" + str(port) + "\ > /sys/class/gpio/export")
+os.system("echo \"" + str(port) + "\" > /sys/class/gpio/export")
 os.system("echo \"in\" > /sys/class/gpio/gpio" + str(port) + "/direction")
 time.sleep(1)
 
