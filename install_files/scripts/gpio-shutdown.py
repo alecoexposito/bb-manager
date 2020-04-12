@@ -61,7 +61,6 @@ def init_gpio():
             is_pressed = False
             print ("counter: ", counter)
             if counter > 30:
-                send_ping_to_server()
                 counter = 0
         time.sleep(0.2)
         """Since we use pull-up the logic will be inverted"""
