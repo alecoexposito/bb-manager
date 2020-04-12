@@ -31,7 +31,7 @@ def get_value():
   return -1
 
 def shutdown():
-  os.system("poweroff -f")
+  os.system("/sbin/poweroff -f")
 
 def init_gpio():
   counter = 0
