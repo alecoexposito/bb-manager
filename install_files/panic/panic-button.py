@@ -19,7 +19,7 @@ logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO, file
 
 
 #led = port.PA1    # This is the same as port.PH2
-port = sys.argv[1] # debe ser 107
+port = str(sys.argv[1]) # debe ser 107
 imei = str(sys.argv[2])
 error_sending = False;
 os.system("echo \"" + str(port) + "\" > /sys/class/gpio/export")
@@ -54,7 +54,7 @@ def onconnect(socket):
         state = get_value()      # Read button state
         print (state)
         logging.info(state)
-        if state == 1:
+        if state == "1\n":
             current_seconds = int(time.time())
             if is_pressed == False:
                 last_seconds = current_seconds
