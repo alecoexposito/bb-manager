@@ -25,12 +25,14 @@ error_sending = False;
 os.system("echo \"" + str(port) + "\"" > /sys/class/gpio/export")
 os.system("echo \"in\" > /sys/class/gpio/gpio" + str(port) + "/direction")
 time.sleep(1)
-f = open("/sys/class/gpio/gpio" + str(port) + "/value")
 
 def get_value():
+  f = open("/sys/class/gpio/gpio" + str(port) + "/value")
   if f.mode == 'r':
     content = f.read()
+    f.close()
     return content
+  f.close()
   return -1
 
 def onconnect(socket):
