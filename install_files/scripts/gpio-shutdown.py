@@ -29,11 +29,12 @@ def get_value():
     return content
   f.close()
   return -1
-  
+
 def shutdown():
   os.system("poweroff -f")
 
 def init_gpio():
+  counter = 0
   os.system("echo \"" + port + "\" > /sys/class/gpio/export")
   os.system("echo \"in\" > /sys/class/gpio/gpio" + port + "/direction")
   while True:
