@@ -47,21 +47,9 @@ def init_gpio():
         if(state == -1):
           continue
         if state == "0":
-            current_seconds = int(time.time())
-            if is_pressed == False:
-                last_seconds = current_seconds
-                is_pressed = True
-            elif (current_seconds - last_seconds) >= 2 and is_pressed == True:
                 print("powering off...")
                 logging.info("powering off...")
-                last_seconds = current_seconds
-                is_pressed = False
                 shutdown()
-        else:
-            is_pressed = False
-            print ("counter: ", counter)
-            if counter > 30:
-                counter = 0
         time.sleep(0.2)
         """Since we use pull-up the logic will be inverted"""
 
