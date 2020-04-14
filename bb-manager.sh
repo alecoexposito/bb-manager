@@ -7,14 +7,15 @@ show_help() {
 	echo "Opciones:"
 	echo "-h: Muestra esta ayuda"
 	echo "-m: Configurar el modem"
-	echo "-f: Instalación completa de GPS y Haz Flix"
 	echo "-g: Instalación del módulo GPS"
-	echo "-a: Instalación del módulo de Haz Flix"
 	echo "-c: Adicionar una camara"
   	echo "-n: Configurar hostpad"
   	echo "-v: Configurar vpn"
   	echo "-p: Configurar panic"
 	echo "-t Configurar obtener actualizar la hora del sistema operativo obteniendola del modem"
+  	echo "--restart Configurar reinicio por sms y admin web"
+  	echo "--gpio-poweroff Configurar apagado por GPIO"
+	echo "--ntp Instalar ntp"
 }
 
 install_common_dependencies() {
@@ -46,13 +47,6 @@ install_gps_dependencies() {
 	sudo apt-get install sshfs ffmpeg
 	echo instalando gstreamer
 	sudo apt-get install gstreamer1.0-rtsp gstreamer1.0-tools gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav
-}
-
-install_hazflix_dependencies() {
-	install_common_dependencies
-	echo "instalando dependencias haz flix"
-	echo "instalando apache"
-	sudo apt-get install apache2
 }
 
 create_gps_folders() {
@@ -114,18 +108,6 @@ initialize_gps_flow() {
 	pm2 save
 }
 
-create_hazflix_folders() {
-	echo "creando carpetas y ficheros para haz flix"
-	cd ~/installer
-	sudo cp install_files/apache2/www/* /var/www/html/ -r
-	sudo mkdir /var/www/html/uploads
-	sudo chmod 777 /var/www/html/uploads -R
-	sudo cp install_files/apache2/sites_available/* /etc/apache2/sites-available
-	sudo a2ensite android windows apple uploads
-	sudo a2enmod rewrite
-	sudo systemctl restart apache2
-}
-
 setup_modem() {
 	echo "copying modem files"
 
@@ -158,10 +140,6 @@ setup_modem() {
 	(sudo crontab -u root -l; sudo echo "$line" ) | sudo crontab -u root -
 	echo "agregado watchdog al crontab de root"
 
-  setup_restart
-
-  # setup_gpsd
-
 }
 
 setup_sync_modem_date() {
@@ -175,19 +153,6 @@ setup_sync_modem_date() {
 	(sudo crontab -u root -l; sudo echo "$line" ) | sudo crontab -u root -
 	echo "agregado sync-time al crontab de root"
 
-}
-
-setup_gpsd() {
-  echo "instalando gpsd para sincronizar la hora por gps"
-  sudo apt-get install gpsd
-  sudo cp install_files/modem/etc/ntp.conf /etc/ntp.conf
-  sudo cp install_files/modem/etc/default/gpsd /etc/default/gpsd
-  echo "reiniciando servicio ntp"
-  sudo service ntp restart
-  echo "reiniciando servicio gpsd"
-  sudo service gpsd restart
-  echo "estado del servicio gpsd"
-  sudo service gpsd status
 }
 
 setup_restart() {
@@ -204,8 +169,6 @@ setup_restart() {
   sudo cp install_files/restart/smsd.conf /etc/smsd.conf
 }
 
-
-
 install_gps() {
   if ! ping -c 1 www.google.com &> /dev/null;
   then
@@ -219,17 +182,6 @@ install_gps() {
   line="@reboot sleep 15; pm2 restart server"
   (crontab -u zurikato -l; echo "$line" ) | crontab -u zurikato -
   echo "agregado restart pm2 en crontab de zurikato"
-}
-
-install_hazflix() {
-	install_common_dependencies
-	install_hazflix_dependencies
-	create_hazflix_folders
-}
-
-install_full() {
-	install_gps
-	install_hazflix
 }
 
 add_camera() {
@@ -267,11 +219,7 @@ setup_hostpad() {
   sudo iptables -A FORWARD -i wlan0 -o wwan0 -j ACCEPT
   sudo sh -c "iptables-save > /etc/iptables.ipv4.nat"
 
-
-  sudo apt-get install ntp
-  sudo apt-get install ntpdate
-  sudo cp install_files/hostpad/etc/ntp.conf /etc
-  sudo service ntp restart
+  install_ntp
   # echo 'Reiniciando...'
   # sudo reboot
 }
@@ -315,7 +263,6 @@ install_panic() {
   (sudo crontab -u root -l; sudo echo "$line" ) | sudo crontab -u root -
   echo "agregado el panic al crontab de root"
   echo "Debe reiniciar para que los cambios tengan efecto"
-  install_gpio_poweroff
 
 }
 
@@ -330,51 +277,66 @@ install_gpio_poweroff() {
 
 }
 
+install_ntp() {
+	sudo apt-get install ntp
+  	sudo apt-get install ntpdate
+  	sudo cp install_files/hostpad/etc/ntp.conf /etc
+  	sudo service ntp restart
+}
+
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
 # Initialize our own variables:
 output_file=""
 
-while getopts "hgamcnvpt	i:" opt; do
-    case "$opt" in
-    h)
-        show_help
-        exit 0
-        ;;
-    g)  install_gps
-		exit 0
-        ;;
-    a)	install_hazflix
-		exit 0
-		;;
-    m)	setup_modem
-		exit 0
-		;;
-    n)
+while [ "$1" != "" ]; do
+  PARAM=`echo $1 | awk -F= '{print $1}'`
+  case $PARAM in
+    -h)
+      show_help
+      exit 0
+      ;;
+    -g)
+      install_gps
+      exit 0
+      ;;
+    -m)
+      setup_modem
+      exit 0
+      ;;
+    -n)
       setup_hostpad
       exit 0
       ;;
-    v)
+    -v)
       install_vpn
       exit 0
       ;;
-    p)
+    -p)
       install_panic
       exit 0
       ;;
-	t)
-	  setup_sync_modem_date
-	  exit 0
-	  ;;
-    c)
-		add_camera
-		;;
-    esac
+    -t)
+      setup_sync_modem_date
+      exit 0
+      ;;
+    -c)
+      add_camera
+      exit 0
+      ;;
+    --restart)
+      setup_restart
+      exit 0
+      ;;
+    --gpio-poweroff)
+      install_gpio_poweroff
+      exit 0
+      ;;
+    --ntp)
+      install_ntp
+      exit 0
+      ;;
+  esac
+  shift
 done
-
-shift $((OPTIND-1))
-
-[ "${1:-}" = "--" ] && shift
-
-#echo "verbose=$verbose, output_file='$output_file', Leftovers: $@"
