@@ -19,7 +19,7 @@ LNG=$(echo $COORDS | sed -n "s/^.*longitude:\s*\(\S*\).*$/\1/p")
 UTC_TIME=$(echo $COORDS | sed -n "s/^.*UTC timestamp:\s*\(\S*\).*$/\1/p")
 UTC_TIME=$((UTC_TIME / 1000))
 echo "Hora GPS"
-/bin/date -d @$UTC_TIME +"%Y-%m-%d %H:%M:%S"
+/bin/date -d @$UTC_TIME
 
 echo "************ coordenadas gps ************"
 echo "$LAT, $LNG"
