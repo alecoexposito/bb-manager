@@ -59,7 +59,7 @@ def onconnect(socket):
             if is_pressed == False:
                 last_seconds = current_seconds
                 is_pressed = True
-            elif (current_seconds - last_seconds) >= 2 and is_pressed == True:
+            elif (current_seconds - last_seconds) >= 3 and is_pressed == True:
                 send_ping_to_server()
                 send_panic_to_server()
                 last_seconds = current_seconds
