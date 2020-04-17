@@ -11,14 +11,15 @@ date
 echo "************ creando lock file /var/lock/bb-watchdog.lock ******************** "
 echo 0 > /var/lock/bb-watchdog.lock
 
+echo "Hora Sistema"
 date
 COORDS=$(qmicli -p -d /dev/cdc-wdm0 --loc-get-position-report 2>&1 | head -n 30)
 LAT=$(echo $COORDS | sed -n "s/^.*latitude:\s*\(\S*\).*$/\1/p")
 LNG=$(echo $COORDS | sed -n "s/^.*longitude:\s*\(\S*\).*$/\1/p")
 UTC_TIME=$(echo $COORDS | sed -n "s/^.*UTC timestamp:\s*\(\S*\).*$/\1/p")
 UTC_TIME=$((UTC_TIME / 1000))
-echo "Hora"
-echo /bin/date -d @$UTC_TIME +"%Y-%m-%d %H:%M:%S"
+echo "Hora GPS"
+/bin/date -d @$UTC_TIME +"%Y-%m-%d %H:%M:%S"
 
 echo "************ coordenadas gps ************"
 echo "$LAT, $LNG"
