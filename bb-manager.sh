@@ -117,26 +117,26 @@ setup_modem() {
 	# sudo apt-get install perl
 	# sudo cpan install Device::Modem
 	# sudo cpan install Device::Gsm
-	sudo cp install_files/modem/etc/network/interfaces.d/wwan0 /etc/network/interfaces.d/
-	sudo cp install_files/modem/etc/qmi-network.conf /etc/
-	sudo cp install_files/modem/usr/local/bin/qmi-network-raw /usr/local/bin/
+    sudo cp install_files/modem/etc/network/interfaces.d/wwan0 /etc/network/interfaces.d/
+    sudo cp install_files/modem/etc/qmi-network.conf /etc/
+    sudo cp install_files/modem/usr/local/bin/qmi-network-raw /usr/local/bin/
 	echo "starting modem"
 	sudo /sbin/ifdown wwan0
 	sleep 3
 	sudo /sbin/ifup wwan0
   echo "copiando scripts"
-	mkdir /home/zurikato/scripts
-	sudo cp install_files/scripts/ /home/zurikato/ -r
-	sudo chmod +x /home/zurikato/scripts/watchdog.sh
-	sudo chmod +x /home/zurikato/scripts/at-command.py
+	mkdir ~/scripts
+	sudo cp install_files/scripts/ ~/ -r
+	sudo chmod +x ~/scripts/watchdog.sh
+	sudo chmod +x ~/scripts/at-command.py
   MODEM_PORT='serial/by-id/usb-Android_Android-if02-port0'
 	echo "Adicionando linea para activar gps en /etc/rc.local"
-	sudo sed -i "\$i /usr/bin/python /home/zurikato/scripts/at-command.py AT+QGPS=1 $MODEM_PORT &" /etc/rc.local
+	sudo sed -i "\$i /usr/bin/python /home/ai/scripts/at-command.py AT+QGPS=1 $MODEM_PORT &" /etc/rc.local
 	echo "Activando GPS ahora"
-	sudo /usr/bin/python /home/zurikato/scripts/at-command.py AT+QGPS=1 $MODEM_PORT
+	sudo /usr/bin/python ~/scripts/at-command.py AT+QGPS=1 $MODEM_PORT
 
   sudo mkdir /root/log
-	line="*/2 * * * * /home/zurikato/scripts/watchdog.sh >> /root/log/watchdog.log; /bin/sync /root/log/watchdog.log; /bin/sync"
+	line="*/2 * * * * ~/scripts/watchdog.sh >> /root/log/watchdog.log; /bin/sync /root/log/watchdog.log; /bin/sync"
 	(sudo crontab -u root -l; sudo echo "$line" ) | sudo crontab -u root -
 	echo "agregado watchdog al crontab de root"
 
