@@ -9,7 +9,7 @@ show_help() {
 	echo "-m: Configurar el modem"
 	echo "-g: Instalación del módulo GPS"
 	echo "-c: Adicionar una camara"
-  	echo "-n: Configurar hostpad"
+  	echo "--hostpad: Configurar hostpad"
   	echo "-v: Configurar vpn"
   	echo "-p: Configurar panic"
 	echo "-t Configurar obtener actualizar la hora del sistema operativo obteniendola del modem"
@@ -306,7 +306,7 @@ while [ "$1" != "" ]; do
       setup_modem
       exit 0
       ;;
-    -n)
+    --hostpad)
       setup_hostpad
       exit 0
       ;;
