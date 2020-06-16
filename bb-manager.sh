@@ -22,7 +22,7 @@ install_common_dependencies() {
 	echo "instalando dependencias comunes"
 	sudo apt update
 	sudo apt-get update
-  sudo apt-get install curl
+  	sudo apt-get install curl
 	echo "instalando dependencias gps"
 	echo instalando python-pip
 	sudo apt-get install python-pip
