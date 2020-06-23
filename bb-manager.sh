@@ -69,8 +69,8 @@ create_gps_folders() {
 	cp ~/bb/data/bb.sqlite ~/.db
 	# echo "copiando scripts"
 	# sudo cp /home/zurikato/bb-manager/install_files/scripts /home/zurikato -r
-	sudo mkdir /usr/scripts
-	sudo cp install_files/scripts/* /usr/scripts
+	
+	sudo cp ~/bb-manager/install_files/scripts /usr
 	sudo chmod 777 /usr/scripts -R
 	cd ~/scripts
 	#wget https://github.com/alecoexposito/bb-watchdog/raw/master/classes/main.py -O bb-watchdog.py
