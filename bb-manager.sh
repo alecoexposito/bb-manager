@@ -130,7 +130,7 @@ setup_modem() {
 	sudo cp install_files/scripts/ ~/ -r
 	sudo chmod +x ~/scripts/watchdog.sh
 	sudo chmod +x ~/scripts/at-command.py
-  	MODEM_PORT='ttyUSB1'
+  	MODEM_PORT='ttyUSB2'
 	echo "Adicionando linea para activar gps en /etc/rc.local"
 	sudo sed -i "\$i /usr/bin/python /home/zurikato/scripts/at-command.py AT+QGPS=1 $MODEM_PORT &" /etc/rc.local
 	echo "Activando GPS ahora"
