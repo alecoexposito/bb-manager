@@ -70,7 +70,7 @@ create_gps_folders() {
 	# echo "copiando scripts"
 	# sudo cp /home/zurikato/bb-manager/install_files/scripts /home/zurikato -r
 	
-	sudo cp ~/bb-manager/install_files/scripts /usr
+	sudo cp ~/bb-manager/install_files/scripts /usr -r
 	sudo chmod 777 /usr/scripts -R
 	cd ~/scripts
 	#wget https://github.com/alecoexposito/bb-watchdog/raw/master/classes/main.py -O bb-watchdog.py
@@ -191,7 +191,7 @@ add_camera() {
 	mkdir /home/zurikato/video-backup/$id_camera
 	mkdir /home/zurikato/camera-local
 	echo 0 > /home/zurikato/camera-local/camera-$id_camera.jpg
-  echo 0 > /home/zurikato/camera-local/single-camera.jpg
+  	echo 0 > /home/zurikato/camera-local/single-camera.jpg
 	pm2 start --name record-video-$id_camera /usr/scripts/record-video.sh -- $id_camera $ip_camera
 	pm2 startup
 	sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u zurikato --hp /home/zurikato
