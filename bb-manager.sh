@@ -166,6 +166,7 @@ setup_restart() {
   echo "instalando smstools"
   sudo apt-get install smstools
 	sudo chmod +x /home/zurikato/scripts/receive-message.sh
+	sudo chmod 777 /var/log/sms-received.log
 
   sudo cp install_files/restart/smsd.conf /etc/smsd.conf
 }
