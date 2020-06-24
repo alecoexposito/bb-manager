@@ -17,11 +17,11 @@ if not os.getegid() == 0:
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO, filename='/var/log/restart-service.log')
 
 def onconnect(socket):
-    print("connected")
-    socket.subscribe('restart_600_channel')
-    socket.onchannel('restart_600_channel', channelmessage)
+    print("connected")  
+    socket.subscribe('restart_611_channel')
+    socket.onchannel('restart_611_channel', channelmessage)
 
-def channelmessage(key, object):
+def channelmessage():
     logging.info("restarting")
     os.system("reboot")
 
