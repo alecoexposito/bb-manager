@@ -170,7 +170,7 @@ setup_restart() {
 	sudo chmod 777 /var/log/sms-received.log
 
   sudo cp install_files/restart/smsd.conf /etc/smsd.conf
-  sudo cp install_files/vpn/etc/sudoers.d/smsd /etc/sudoers.d/
+  sudo cp install_files/restart/smsd /etc/sudoers.d/
 }
 
 install_gps() {
