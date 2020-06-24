@@ -14,6 +14,7 @@ logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO, file
 
 def onconnect(socket):
     print("connected")  
+    logging.info("connected")
     socket.subscribe('restart_611_channel')
     socket.onchannel('restart_611_channel', channelmessage)
 
