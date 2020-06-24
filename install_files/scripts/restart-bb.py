@@ -18,10 +18,10 @@ logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO, file
 
 def onconnect(socket):
     print("connected")  
-    socket.subscribe('restart_611_channel')
+    # socket.subscribe('restart_611_channel')
     socket.onchannel('restart_611_channel', channelmessage)
 
-def channelmessage():
+def channelmessage(key, object):
     logging.info("restarting")
     os.system("reboot")
 
