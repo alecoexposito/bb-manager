@@ -1,8 +1,4 @@
 #!/usr/bin/env python
-"""Read button.
-
-Make gpio input and enable pull-up resistor.
-"""
 
 import os
 import sys
@@ -18,8 +14,8 @@ logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO, file
 
 def onconnect(socket):
     print("connected")  
-    # socket.subscribe('restart_611_channel')
-    # socket.onchannel('restart_611_channel', channelmessage)
+    socket.subscribe('restart_611_channel')
+    socket.onchannel('restart_611_channel', channelmessage)
 
 def channelmessage(key, object):
     logging.info("restarting")
