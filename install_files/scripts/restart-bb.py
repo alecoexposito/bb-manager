@@ -17,10 +17,11 @@ def onconnect(socket):
     logging.info("connected")
     socket.subscribe('restart_611_channel')
     socket.onchannel('restart_611_channel', channelmessage)
+#    socket.on('restart_611_channel', channelmessage)
 
 def channelmessage(key, object):
     logging.info("restarting")
-    os.system("reboot")
+    os.system("/sbin/reboot")
 
 def ondisconnect(socket):
     print("disconnected")
@@ -29,6 +30,7 @@ def ondisconnect(socket):
 def onConnectError(socket, error):
     print("error on connect")
     logging.info("On connect error got called")
+    logging.error(error)
 
 def init_socket():
     global socket
@@ -36,12 +38,11 @@ def init_socket():
     socket.setBasicListener(onconnect, ondisconnect, onConnectError)
     socket.setdelay(2)
     socket.setreconnection(True)
+    socket.enablelogger(True)
     socket.connect()
 
 try:
     init_socket()
-    # while(True):
-    #     time.sleep(3)
 
 except KeyboardInterrupt:
     print ("Goodbye.")
