@@ -12,12 +12,14 @@ if not os.getegid() == 0:
 
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO, filename='/var/log/restart-service.log')
 
+bb_id = str(sys.argv[1])
+ip_server = str(sys.argv[2])
+
 def onconnect(socket):
     print("connected")  
     logging.info("connected")
-    socket.subscribe('restart_611_channel')
-    socket.onchannel('restart_611_channel', channelmessage)
-#    socket.on('restart_611_channel', channelmessage)
+    socket.subscribe('restart_' + bb_id + '_channel')
+    socket.onchannel('restart_' + bb_id + '_channel', channelmessage)
 
 def channelmessage(key, object):
     logging.info("restarting")
@@ -34,7 +36,7 @@ def onConnectError(socket, error):
 
 def init_socket():
     global socket
-    socket = Socketcluster.socket("ws://69.64.32.172:3001/socketcluster/")
+    socket = Socketcluster.socket("ws://" + str(ip_server) + ":3001/socketcluster/")
     socket.setBasicListener(onconnect, ondisconnect, onConnectError)
     socket.setdelay(2)
     socket.setreconnection(True)
