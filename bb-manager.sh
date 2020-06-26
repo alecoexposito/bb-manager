@@ -157,9 +157,13 @@ setup_sync_modem_date() {
 }
 
 setup_restart() {
-  echo "configurando para que reinicie por admin y por sms"
+	read -p "Entre el id de la bb: " bb_id < /dev/tty
+	read -p "Entre el ip del server donde esta el tracker: " -i "69.64.32.172" -e ip_server < /dev/tty
+
+  	echo "configurando para que reinicie por admin y por sms"
 	sudo chmod +x /home/zurikato/scripts/restart-bb.py
-	LINE_REBOOT="@reboot sleep 10; /usr/bin/python /home/zurikato/scripts/restart-bb.py &"
+
+	LINE_REBOOT="@reboot sleep 10; /usr/bin/python /home/zurikato/scripts/restart-bb.py ${bb_id} ${ip_server} &"
 	(sudo crontab -u root -l; sudo echo "$LINE_REBOOT" ) | sudo crontab -u root -
 	echo "agregado restart al crontab de root para reiniciar desde admin"
 
