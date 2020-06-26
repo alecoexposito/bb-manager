@@ -17,6 +17,6 @@ echo $2 >> /var/log/sms-received.log
 #echo $text >> /var/log/sms-received.log
 
 if fgrep -i 'RESTART' $2; then
-  echo "restarting" >> /var/log/sms-received.log
-  sudo /sbin/reboot 2>> /var/log/sms-received.log >> /var/log/sms-received.log
+  # echo "restarting" >> /var/log/sms-received.log
+  sudo /sbin/reboot
 fi
