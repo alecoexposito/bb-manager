@@ -171,7 +171,7 @@ setup_restart() {
   sudo apt-get install smstools
 	sudo chmod +x /home/zurikato/scripts/receive-message.sh
 	sudo chmod 777 /home/zurikato/scripts/receive-message.sh
-	
+
 	sudo echo 0 > /var/log/sms-received.log
 	sudo chmod 777 /var/log/sms-received.log
 
@@ -205,6 +205,9 @@ add_camera() {
 	pm2 startup
 	sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u zurikato --hp /home/zurikato
 	pm2 save
+
+	line="@reboot /bin/sleep 15; /usr/bin/pm2 restart record-video-${id_camera}"
+  	(crontab -u zurikato -l; echo "$line" ) | crontab -u zurikato -
 }
 
 setup_hostpad() {
