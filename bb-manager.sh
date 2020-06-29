@@ -76,7 +76,6 @@ create_gps_folders() {
 	line="/bin/sleep 12; @reboot /bin/chmod 777 /home/zurikato/video-backup -R"
 	(sudo crontab -u root -l; sudo echo "$line" ) | sudo crontab -u root -
 
-
 }
 
 initialize_gps_flow() {
