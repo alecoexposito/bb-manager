@@ -171,7 +171,7 @@ setup_restart() {
 	sudo chmod +x /home/zurikato/scripts/receive-message.sh
 	sudo chmod 777 /home/zurikato/scripts/receive-message.sh
 
-	sudo echo 0 > /var/log/sms-received.log
+	sudo sh -c "echo 0 > /var/log/sms-received.log"
 	sudo chmod 777 /var/log/sms-received.log
 
   sudo cp install_files/restart/smsd.conf /etc/smsd.conf
