@@ -73,7 +73,7 @@ create_gps_folders() {
 	sudo cp ~/bb-manager/install_files/scripts /usr -r
 	sudo chmod 777 /usr/scripts -R
 	sudo chmod 777 /home/zurikato/video-backup
-	line="/bin/sleep 12; @reboot /bin/chmod 777 /home/zurikato/video-backup -R"
+	line="@reboot /bin/sleep 12; @reboot /bin/chmod 777 /home/zurikato/video-backup -R"
 	(sudo crontab -u root -l; sudo echo "$line" ) | sudo crontab -u root -
 
 }
