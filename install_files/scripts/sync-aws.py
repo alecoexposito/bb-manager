@@ -1,6 +1,7 @@
 import http.client
 import json
 import os
+import sys
 
 # config = loadConfiguration()
 
@@ -10,7 +11,8 @@ def loadConfiguration():
 def getPath():
     print("en el metodo")
     conn = http.client.HTTPConnection('69.64.32.172',  3010)
-    conn.request('GET', '/blackboxes/$1/getPath')
+    id = sys.argv[1]
+    conn.request('GET', '/blackboxes/' + id + '/getPath')
     resp = conn.getresponse()
     responseStr = resp.read().decode();
     print("resp: ", responseStr)
