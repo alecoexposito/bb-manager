@@ -29,6 +29,6 @@ print(path);
 # /usr/local/bin/aws s3 sync s3://zurikato-dev-01/1 /home/zurikato/tmp/1 --size-only --delete
 
 os.system("/usr/bin/aws s3 sync s3://" + path + " /home/zurikato/apps/tvz-media-server/media --size-only --delete")
-os.system("for f in *.mp4; do ffmpeg -i "$f" -ss 00:00:03 -vframes 1 -s 480x320 "thumb-${f}.jpg"; done")
-os.system("for f in *.mkv; do ffmpeg -i "$f" -ss 00:00:03 -vframes 1 -s 480x320 "thumb-${f}.jpg"; done")
-os.system("for f in *.3gp; do ffmpeg -i "$f" -ss 00:00:03 -vframes 1 -s 480x320 "thumb-${f}.jpg"; done")
+os.system("for f in *.mp4; do ffmpeg -i '$f' -ss 00:00:03 -vframes 1 -s 480x320 'thumb-${f}.jpg'; done")
+os.system("for f in *.mkv; do ffmpeg -i '$f' -ss 00:00:03 -vframes 1 -s 480x320 'thumb-${f}.jpg'; done")
+os.system("for f in *.3gp; do ffmpeg -i '$f' -ss 00:00:03 -vframes 1 -s 480x320 'thumb-${f}.jpg'; done")
