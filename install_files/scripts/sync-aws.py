@@ -28,4 +28,4 @@ print(path);
 
 # /usr/local/bin/aws s3 sync s3://zurikato-dev-01/1 /home/zurikato/tmp/1 --size-only --delete
 
-os.system("/usr/local/bin/aws s3 sync s3://" + path + " /home/zurikato/apps/tvz-media-server/media --size-only --delete")
+os.system("/usr/bin/aws s3 sync s3://" + path + " /home/zurikato/apps/tvz-media-server/media --size-only --delete")
