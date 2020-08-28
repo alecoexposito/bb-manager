@@ -60,7 +60,8 @@ if settingsDict['syncData'] == True:
     else:
         print('no se puede borrar en el sync')
         os.system("/usr/bin/aws s3 sync s3://" + path + " /home/zurikato/apps/tvz-media-server/media --size-only --exclude \"*local-*.*\"")
-
+else:
+    print("no se sincroniza del servidor")
 # os.system("/usr/bin/aws s3 sync s3://" + path + " /home/zurikato/apps/tvz-media-server/media --size-only --delete --exclude \"*local-*.*\"")
 os.system("cd /home/zurikato/apps/tvz-media-server/media; /usr/bin/find $PWD -regex '.*\.\(mkv\|webm\|avi\|mp4\)$' | while read f; do /usr/bin/ffmpeg -n -i \"$f\" -ss 00:00:03 -vframes 1 -s 480x320 ${f%/*}/thumb-\"${f##*/}\".jpg; done")
 
