@@ -25,7 +25,7 @@ def getPath():
 def updateSettingsFile():
     conn = http.client.HTTPConnection('69.64.32.172',  3010)
     id = sys.argv[1]
-    conn.request('GET', '/blackboxes/' + id + '/getSettings')
+    conn.request('GET', '/blackboxes/' + id + '/getActiveSettings')
     resp = conn.getresponse()
     responseStr = resp.read().decode()
     if is_json(responseStr):
