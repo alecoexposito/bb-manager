@@ -53,7 +53,7 @@ settingsStr = updateSettingsFile()
 settingsDict = json.loads(settingsStr)
 print(settingsDict)
 if settingsDict['syncData'] == True:
-    if settingsDict['deleteOnSync']:
+    if settingsDict['deleteOnSync'] == True:
         print('se puede borrar en el sync')
         os.system("/usr/bin/aws s3 sync s3://" + path + " /home/zurikato/apps/tvz-media-server/media --size-only --delete --exclude \"*local-*.*\"")
 
