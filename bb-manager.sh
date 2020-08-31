@@ -306,6 +306,7 @@ install_tvz() {
 	sudo cp dist/tvz-media-frontend /var/www/html -r
 	rm dist -r
 	echo "habilitando modulos"
+	sudo a2enmod headers
 	sudo a2enmod rewrite
 	sudo a2ensite tvz-media-frontend
 	sudo sed -i '1s;^;Listen 8003\n;' /etc/apache2/ports.conf
