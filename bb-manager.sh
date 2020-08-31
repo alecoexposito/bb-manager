@@ -16,6 +16,7 @@ show_help() {
   	echo "--restart Configurar reinicio por sms y admin web"
   	echo "--gpio-poweroff Configurar apagado por GPIO"
 	echo "--ntp Instalar ntp"
+	echo "--tvz Instalar TVZ"
 }
 
 install_common_dependencies() {
@@ -322,6 +323,7 @@ install_tvz() {
 	cd apps
 	git clone https://gitlab.com/alecoexposito/tvz-media-server.git
 	cd tvz-media-server
+	mkdir media
 	npm install
 	sudo pm2 install typescript
 	pm2 start src/index.ts
