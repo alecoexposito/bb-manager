@@ -310,7 +310,8 @@ install_tvz() {
 	sudo a2ensite tvz-media-frontend
 	echo "reiniciando apache"
 	sudo service apache2 restart
-	line="*/5 * * * * /usr/bin/python3 /home/zurikato/scripts/sync-aws.py 8 >> /home/zurikato/scripts/sync-aws.log"
+	read -p "Entre el id de la BB en el servidor de contenido: " -i "0" -e bb_content_id < /dev/tty
+	line="*/5 * * * * /usr/bin/python3 /home/zurikato/scripts/sync-aws.py ${bb_content_id} >> /home/zurikato/scripts/sync-aws.log"
 	(crontab -l; echo "$line" ) | crontab -
 
 	echo "montando el media server"
