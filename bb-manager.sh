@@ -296,6 +296,23 @@ install_ntp() {
   	sudo service ntp restart
 }
 
+install_tvz() {
+	echo "instalando apache"
+	sudo apt-get install apache2
+	echo "copiando ficheros"
+	sudo cp install_files/tvz/tvz-media-frontend.conf /etc/apache2/sites-available
+	cd install_files/tvz
+	unzip dist.zip
+	sudo cp dist/tvz-media-frontend /var/www/html -r
+	echo "habilitando modulos"
+	sudo a2enmod rewrite
+	sudo a2ensite tvz-media-frontend
+	echo "reiniciando apache"
+	sudo service apache2 restart
+	line="*/5 * * * * /usr/bin/python3 /home/zurikato/scripts/sync-aws.py 8 >> /home/zurikato/scripts/sync-aws.log"
+	(crontab -u root -l; echo "$line" ) | crontab -u zurikato -
+}
+
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
@@ -349,6 +366,10 @@ while [ "$1" != "" ]; do
       install_ntp
       exit 0
       ;;
+	--tvz)
+	  install_tvz
+	  exit0
+	  ;;
   esac
   shift
 done
