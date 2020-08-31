@@ -308,6 +308,7 @@ install_tvz() {
 	echo "habilitando modulos"
 	sudo a2enmod rewrite
 	sudo a2ensite tvz-media-frontend
+	sudo sed -i '1s;^;Listen 8003\n;' /etc/apache2/ports.conf
 	echo "reiniciando apache"
 	sudo service apache2 restart
 	read -p "Entre el id de la BB en el servidor de contenido: " -i "0" -e bb_content_id < /dev/tty
