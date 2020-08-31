@@ -304,6 +304,7 @@ install_tvz() {
 	cd install_files/tvz
 	unzip dist.zip
 	sudo cp dist/tvz-media-frontend /var/www/html -r
+	rm dist -r
 	echo "habilitando modulos"
 	sudo a2enmod rewrite
 	sudo a2ensite tvz-media-frontend
@@ -311,6 +312,17 @@ install_tvz() {
 	sudo service apache2 restart
 	line="*/5 * * * * /usr/bin/python3 /home/zurikato/scripts/sync-aws.py 8 >> /home/zurikato/scripts/sync-aws.log"
 	(crontab -l; echo "$line" ) | crontab -
+
+	echo "montando el media server"
+	cd /home/zurikato
+	mkdir apps
+	cd apps
+	git clone https://gitlab.com/alecoexposito/tvz-media-server.git
+	pm2 install typescript
+	pm2 start tvz-media-server/src/index.ts
+	pm2 startup
+	sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u zurikato --hp /home/zurikato
+	pm2 save
 }
 
 # A POSIX variable
