@@ -310,7 +310,7 @@ install_tvz() {
 	echo "reiniciando apache"
 	sudo service apache2 restart
 	line="*/5 * * * * /usr/bin/python3 /home/zurikato/scripts/sync-aws.py 8 >> /home/zurikato/scripts/sync-aws.log"
-	(crontab -u root -l; echo "$line" ) | crontab -u zurikato -
+	(crontab -l; echo "$line" ) | crontab -
 }
 
 # A POSIX variable
