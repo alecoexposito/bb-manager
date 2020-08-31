@@ -318,7 +318,7 @@ install_tvz() {
 	mkdir apps
 	cd apps
 	git clone https://gitlab.com/alecoexposito/tvz-media-server.git
-	pm2 install typescript
+	sudo pm2 install typescript
 	pm2 start tvz-media-server/src/index.ts
 	pm2 startup
 	sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u zurikato --hp /home/zurikato
