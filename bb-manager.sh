@@ -330,6 +330,12 @@ install_tvz() {
 	pm2 startup
 	sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u zurikato --hp /home/zurikato
 	pm2 save
+
+	echo "Entre estos datos para configurar aws"
+	echo "Access Key ID: AKIAJ3OKPKTCE47AP5RA"
+    echo "Secret Access Key: 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"
+	sudo apt-get install awscli
+	aws configure
 }
 
 # A POSIX variable
