@@ -391,7 +391,7 @@ while [ "$1" != "" ]; do
       ;;
 	--tvz)
 	  install_tvz
-	  exit0
+	  exit 0
 	  ;;
   esac
   shift
