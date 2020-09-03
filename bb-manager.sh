@@ -295,6 +295,7 @@ install_ntp() {
   	sudo apt-get install ntpdate
   	sudo cp install_files/hostpad/etc/ntp.conf /etc
   	sudo service ntp restart
+	sudo ntpdate -u 69.64.32.172
 }
 
 install_tvz() {
@@ -325,6 +326,7 @@ install_tvz() {
 	git clone https://gitlab.com/alecoexposito/tvz-media-server.git
 	cd tvz-media-server
 	mkdir media
+	sudo chmod 777 media -R
 	npm install
 	sudo pm2 install typescript
 	pm2 start src/index.ts
