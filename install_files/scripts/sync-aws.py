@@ -33,7 +33,7 @@ def updateSettingsFile():
         now = datetime.datetime.now();
         nowStr = now.strftime("%d/%m/%Y %H:%M:%S")
         jsonDict.update({'lastSyncDate': nowStr})
-        jsonDict[bbId] = id
+        jsonDict["bbId"] = id
         responseStr = json.dumps(jsonDict);
         f = open('/home/zurikato/apps/tvz-media-server/settings-bb.json', 'w')
         f.write(responseStr)
