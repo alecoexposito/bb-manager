@@ -17,6 +17,7 @@ show_help() {
   	echo "--gpio-poweroff Configurar apagado por GPIO"
 	echo "--ntp Instalar ntp"
 	echo "--tvz Instalar TVZ"
+	echo "--web-admin Instalar Web Admin"
 }
 
 install_common_dependencies() {
@@ -299,21 +300,6 @@ install_ntp() {
 }
 
 install_tvz() {
-	echo "instalando apache"
-	sudo apt-get install apache2
-	echo "copiando ficheros"
-	sudo cp install_files/tvz/tvz-media-frontend.conf /etc/apache2/sites-available
-	cd install_files/tvz
-	unzip dist.zip
-	sudo cp dist/tvz-media-frontend /var/www/html -r
-	rm dist -r
-	echo "habilitando modulos"
-	sudo a2enmod headers
-	sudo a2enmod rewrite
-	sudo a2ensite tvz-media-frontend
-	sudo sed -i '1s;^;Listen 8003\n;' /etc/apache2/ports.conf
-	echo "reiniciando apache"
-	sudo service apache2 restart
 	read -p "Entre el id de la BB en el servidor de contenido: " -i "0" -e bb_content_id < /dev/tty
 	line="*/5 * * * * /usr/bin/python3 /home/zurikato/scripts/sync-aws.py ${bb_content_id} >> /home/zurikato/scripts/sync-aws.log"
 	(crontab -l; echo "$line" ) | crontab -
@@ -324,7 +310,14 @@ install_tvz() {
 	mkdir apps
 	cd apps
 	git clone https://gitlab.com/alecoexposito/tvz-media-server.git
-	cd tvz-media-server
+	echo "copiando ficheros de frontend"
+	mkdir /home/zurikato/apps/tvz-media-server/src/static/
+	cd /home/zurikato/bb-manager/install_files/tvz
+	unzip dist.zip
+	sudo cp dist/tvz-media-frontend/* /home/zurikato/apps/tvz-media-server/src/static/ -r
+	rm dist -r
+
+	cd /home/zurikato/apps/tvz-media-server
 	mkdir media
 	sudo chmod 777 media -R
 	npm install
@@ -336,6 +329,30 @@ install_tvz() {
 
 	sudo apt-get install awscli
 	aws configure
+}
+
+install_web_admin() {
+	sudo apt-get install unzip
+	echo "montando el media server"
+	cd /home/zurikato
+	mkdir apps
+	cd apps
+	git clone https://gitlab.com/alecoexposito/bb-admin-backend.git
+	echo "copiando ficheros de frontend"
+	mkdir /home/zurikato/apps/bb-admin-backend/src/static/
+	cd /home/zurikato/bb-manager/install_files/web-admin
+	unzip dist.zip
+	sudo cp dist/bb-admin-frontend/* /home/zurikato/apps/bb-admin-backend/src/static/ -r
+	rm dist -r
+
+	cd /home/zurikato/apps/bb-admin-backend
+	npm install
+	sudo pm2 install typescript
+	pm2 start src/index.ts
+	pm2 startup
+	sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u zurikato --hp /home/zurikato
+	pm2 save
+
 }
 
 # A POSIX variable
@@ -393,6 +410,10 @@ while [ "$1" != "" ]; do
       ;;
 	--tvz)
 	  install_tvz
+	  exit 0
+	  ;;
+	--web-admin)
+	  install_web_admin
 	  exit 0
 	  ;;
   esac
