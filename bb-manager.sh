@@ -322,7 +322,7 @@ install_tvz() {
 	sudo chmod 777 media -R
 	npm install
 	sudo pm2 install typescript
-	pm2 start src/index.ts
+	pm2 start src/index.ts --name tvz
 	pm2 startup
 	sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u zurikato --hp /home/zurikato
 	pm2 save
@@ -348,7 +348,7 @@ install_web_admin() {
 	cd /home/zurikato/apps/bb-admin-backend
 	npm install
 	sudo pm2 install typescript
-	pm2 start src/index.ts
+	pm2 start src/index.ts --name web-admin
 	pm2 startup
 	sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u zurikato --hp /home/zurikato
 	pm2 save
