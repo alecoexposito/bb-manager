@@ -347,10 +347,10 @@ install_web_admin() {
 
 	cd /home/zurikato/apps/bb-admin-backend
 	npm install
-	sudo pm2 install typescript
-	sudo pm2 start src/index.ts --name web-admin
-	sudo pm2 startup
-	sudo pm2 save
+	sudo /usr/bin/pm2 install typescript
+	sudo /usr/bini/pm2 start src/index.ts --name web-admin
+	sudo /usr/bin/pm2 startup
+	sudo /usr/bin/pm2 save
 
 }
 
