@@ -321,7 +321,7 @@ install_tvz() {
 	mkdir media
 	sudo chmod 777 media -R
 	npm install
-	sudo pm2 install typescript
+	install_pm2_typescript
 	pm2 start src/index.ts --name tvz
 	pm2 startup
 	sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u zurikato --hp /home/zurikato
