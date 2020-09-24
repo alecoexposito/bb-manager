@@ -347,11 +347,22 @@ install_web_admin() {
 
 	cd /home/zurikato/apps/bb-admin-backend
 	npm install
-	sudo /usr/bin/pm2 install typescript
+
+	install_pm2_typescript
+	cd /home/zurikato/apps/bb-admin-backend
 	sudo /usr/bin/pm2 start src/index.ts --name web-admin
 	sudo /usr/bin/pm2 startup
 	sudo /usr/bin/pm2 save
 
+}
+
+install_pm2_typescript() {
+	if ! [ -f "/usr/lib/node_modules/pm2/node_modules/.bin" ]; then
+		echo "installing typescript for pm2"
+		cd /home/zurikato
+		sudo /usr/bin/pm2 install typescript
+		sudo /usr/bin/pm2 install @types/node
+	fi
 }
 
 # A POSIX variable
