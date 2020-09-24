@@ -357,7 +357,7 @@ install_web_admin() {
 }
 
 install_pm2_typescript() {
-	if ! [ -f "/usr/lib/node_modules/pm2/node_modules/.bin" ]; then
+	if ! [ -f "/usr/lib/node_modules/pm2/node_modules/.bin/ts-node" ]; then
 		echo "installing typescript for pm2"
 		cd /home/zurikato
 		sudo /usr/bin/pm2 install typescript
