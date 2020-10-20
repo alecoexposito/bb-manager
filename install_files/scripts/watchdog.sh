@@ -13,16 +13,16 @@ echo 0 > /var/lock/bb-watchdog.lock
 
 echo "Hora Sistema"
 date
-COORDS=$(qmicli -p -d /dev/cdc-wdm0 --loc-get-position-report 2>&1 | head -n 30)
-LAT=$(echo $COORDS | sed -n "s/^.*latitude:\s*\(\S*\).*$/\1/p")
-LNG=$(echo $COORDS | sed -n "s/^.*longitude:\s*\(\S*\).*$/\1/p")
-UTC_TIME=$(echo $COORDS | sed -n "s/^.*UTC timestamp:\s*\(\S*\).*$/\1/p")
-UTC_TIME=$((UTC_TIME / 1000))
-echo "Hora GPS"
-/bin/date -d @$UTC_TIME
+# COORDS=$(qmicli -p -d /dev/cdc-wdm0 --loc-get-position-report 2>&1 | head -n 30)
+# LAT=$(echo $COORDS | sed -n "s/^.*latitude:\s*\(\S*\).*$/\1/p")
+# LNG=$(echo $COORDS | sed -n "s/^.*longitude:\s*\(\S*\).*$/\1/p")
+# UTC_TIME=$(echo $COORDS | sed -n "s/^.*UTC timestamp:\s*\(\S*\).*$/\1/p")
+# UTC_TIME=$((UTC_TIME / 1000))
+# echo "Hora GPS"
+# /bin/date -d @$UTC_TIME
 
-echo "************ coordenadas gps ************"
-echo "$LAT, $LNG"
+# echo "************ coordenadas gps ************"
+# echo "$LAT, $LNG"
 date
 sleep 1
 echo "************ intensidad de la sennal ************"
@@ -51,12 +51,13 @@ then
   if ! echo "$STATUS" | grep -q "Connection status: 'disconnected'";
   then
     echo "el modem está en un estado bloqueado, reiniciando..."
-    echo "corriendo comando at AT+CFUN=1,1"
-    /usr/bin/python /home/zurikato/scripts/at-command.py AT+CFUN=1,1 $MODEM_PORT
-    sleep 10
-    echo "activando gps"
-    /usr/bin/python /home/zurikato/scripts/at-command.py AT+QGPS=1 $MODEM_PORT
-    sleep 3
+    echo "comentado el reiniciar..... no hace nada"
+    # echo "corriendo comando at AT+CFUN=1,1"
+    # /usr/bin/python /home/zurikato/scripts/at-command.py AT+CFUN=1,1 $MODEM_PORT
+    # sleep 10
+    # echo "activando gps"
+    # /usr/bin/python /home/zurikato/scripts/at-command.py AT+QGPS=1 $MODEM_PORT
+    # sleep 3
   fi
   echo "corriendo el stop bajo protesta"
   /usr/local/bin/qmi-network-raw /dev/cdc-wdm0 stop

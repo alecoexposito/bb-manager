@@ -41,15 +41,19 @@ install_common_dependencies() {
 }
 
 install_gps_dependencies() {
+	install_node_pm2
+	echo instalando ffmpeg
+	sudo apt-get install sshfs ffmpeg
+	echo instalando gstreamer
+	sudo apt-get install gstreamer1.0-rtsp gstreamer1.0-tools gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav
+}
+
+install_node_pm2() {
 	echo instalando nodejs
 	curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
 	sudo apt-get install -y nodejs
 	echo instalando pm2
 	sudo npm install pm2@latest -g
-	echo instalando ffmpeg
-	sudo apt-get install sshfs ffmpeg
-	echo instalando gstreamer
-	sudo apt-get install gstreamer1.0-rtsp gstreamer1.0-tools gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav
 }
 
 create_gps_folders() {
@@ -332,6 +336,7 @@ install_tvz() {
 }
 
 install_web_admin() {
+	install_node_pm2
 	sudo apt-get install unzip
 	echo "montando el media server"
 	cd /home/zurikato
