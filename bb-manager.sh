@@ -351,7 +351,7 @@ install_web_admin() {
 
 	cd /home/zurikato/apps/bb-admin-backend
 	npm install
-	sudo npm run start:prod
+	sudo npm run build
 	cd /home/zurikato/apps/bb-admin-backend
 	sudo /usr/bin/pm2 start dist/main.js --name web-admin
 	sudo /usr/bin/pm2 startup
