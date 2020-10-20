@@ -334,31 +334,28 @@ install_tvz() {
 	sudo apt-get install awscli
 	aws configure
 }
-
+install_redis() {
+	sudo apt-get install redis-server
+}
 install_web_admin() {
 	install_node_pm2
+	install_redis
 	sudo apt-get install unzip
 	echo "montando el media server"
 	cd /home/zurikato
+	echo 'creando carpeta media'
+	sudo mkdir -p /home/zurikato/tvz-media-server/media
 	mkdir apps
 	cd apps
-	git clone https://gitlab.com/alecoexposito/bb-admin-backend.git
-	echo "copiando ficheros de frontend"
-	mkdir /home/zurikato/apps/bb-admin-backend/src/static/
-	cd /home/zurikato/bb-manager/install_files/web-admin
-	unzip dist.zip
-	sudo cp dist/bb-admin-frontend/* /home/zurikato/apps/bb-admin-backend/src/static/ -r
-	rm dist -r
+	git clone https://gitlab.com/alecoexposito/bb-admin-backend-nest.git bb-admin-backend
 
 	cd /home/zurikato/apps/bb-admin-backend
 	npm install
-
-	install_pm2_typescript
+	sudo npm run start
 	cd /home/zurikato/apps/bb-admin-backend
-	sudo /usr/bin/pm2 start src/index.ts --name web-admin
+	sudo /usr/bin/pm2 start dist/main.js --name web-admin
 	sudo /usr/bin/pm2 startup
 	sudo /usr/bin/pm2 save
-
 }
 
 install_pm2_typescript() {
