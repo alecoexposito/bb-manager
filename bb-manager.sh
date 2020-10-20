@@ -344,14 +344,14 @@ install_web_admin() {
 	echo "montando el media server"
 	cd /home/zurikato
 	echo 'creando carpeta media'
-	sudo mkdir -p /home/zurikato/tvz-media-server/media
 	mkdir apps
 	cd apps
+	sudo mkdir -p /home/zurikato/apps/tvz-media-server/media
 	git clone https://gitlab.com/alecoexposito/bb-admin-backend-nest.git bb-admin-backend
 
 	cd /home/zurikato/apps/bb-admin-backend
 	npm install
-	sudo npm run start
+	sudo npm run start:prod
 	cd /home/zurikato/apps/bb-admin-backend
 	sudo /usr/bin/pm2 start dist/main.js --name web-admin
 	sudo /usr/bin/pm2 startup
