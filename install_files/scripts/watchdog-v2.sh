@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-while [True]
+while [ True ]
 do
 
 # LOCK_FILE=/var/lock/bb-watchdog.lock
@@ -14,7 +14,7 @@ LTE_MIN=-90
 LTE_MAX=-50
 INFO=$(qmicli --device=/dev/cdc-wdm0 --nas-get-signal-info 2>&1)
 RSSI=$(echo $INFO | sed -n "s/^.*RSSI:\s'*\(\S*\).*$/\1/p")
-
+echo "Respuesta: $INFO"
 echo "RSSI: $RSSI"
 
 if [[ $RSSI -lt $LTE_MIN ]]; then
