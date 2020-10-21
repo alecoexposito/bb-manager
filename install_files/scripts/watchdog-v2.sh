@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 
-LOCK_FILE=/var/lock/bb-watchdog.lock
-if test -f $LOCK_FILE; then
-  exit
-fi
+# LOCK_FILE=/var/lock/bb-watchdog.lock
+# if test -f $LOCK_FILE; then
+#   exit
+# fi
 
 # echo "************ creando lock file /var/lock/bb-watchdog.lock ******************** "
 # echo 0 > /var/lock/bb-watchdog.lock
@@ -15,7 +15,7 @@ RSSI=$(echo $INFO | sed -n "s/^.*RSSI:\s*\(\S*\).*$/\1/p")
 
 echo "RSSI: $RSSI"
 
-if [$RSSI < $LTE_MIN ] then
+if [$RSSI < $LTE_MIN ]; then
   echo "está por debajo de $LTE_MIN, sin internet"
 else
   echo "esta por encima de $LTE_MIN, con internet"
