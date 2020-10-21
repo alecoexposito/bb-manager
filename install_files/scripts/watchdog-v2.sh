@@ -6,8 +6,8 @@ if test -f $LOCK_FILE; then
   exit
 fi
 
-echo "************ creando lock file /var/lock/bb-watchdog.lock ******************** "
-echo 0 > /var/lock/bb-watchdog.lock
+# echo "************ creando lock file /var/lock/bb-watchdog.lock ******************** "
+# echo 0 > /var/lock/bb-watchdog.lock
 LTE_MIN=-90
 LTE_MAX=-50
 INFO=$(qmicli --device=/dev/cdc-wdm0 --nas-get-signal-info 2>&1)
@@ -18,7 +18,7 @@ echo "RSSI: $RSSI"
 if [$RSSI < $LTE_MIN ] then
   echo "está por debajo de $LTE_MIN, sin internet"
 else
-  echo "esta por encima de $LTE_MIN, con internet";
+  echo "esta por encima de $LTE_MIN, con internet"
 fi
 
 
