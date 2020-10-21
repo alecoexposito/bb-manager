@@ -11,7 +11,7 @@
 LTE_MIN=-90
 LTE_MAX=-50
 INFO=$(qmicli --device=/dev/cdc-wdm0 --nas-get-signal-info 2>&1)
-RSSI=$(echo $INFO | sed -n "s/^.*RSSI:\s*\(\S*\).*$/\1/p")
+RSSI=$(echo $INFO | sed -n "s/^.*RSSI:\s\'*\(\S*\).*$/\1/p")
 
 echo "RSSI: $RSSI"
 
@@ -23,8 +23,8 @@ fi
 
 
 
-rm $LOCK_FILE
-echo "************ archivo lock /var/lock/bb-watchdog.lock eliminado ******************** "
+# rm $LOCK_FILE
+# echo "************ archivo lock /var/lock/bb-watchdog.lock eliminado ******************** "
 
 echo '*********************************************************************************'
 echo ''
