@@ -17,10 +17,14 @@ RSSI=$(echo $INFO | sed -n "s/^.*RSSI:\s'*\(\S*\).*$/\1/p")
 echo "Respuesta: $INFO"
 echo "RSSI: $RSSI"
 
+/usr/bin/sleep 2
+sudo /usr/bin/ -p -d /dev/cdc-wdm0 --loc-get-position-report
+
 if [[ $RSSI -lt $LTE_MIN ]]; then
   echo "esta por debajo de $LTE_MIN, sin internet"
   if [ $IS_DOWN == "False" ]; then
     IS_DOWN="True"
+    sudo /usr/bin/qmi-network /dev/cdc-wdm0 stop
     echo "corriendo ifconfig wwan0 down"
     sudo /usr/sbin/ifconfig wwan0 down
     echo "esperando 7 segundos"
