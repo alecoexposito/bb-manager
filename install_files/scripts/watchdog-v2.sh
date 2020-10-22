@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+IS_DOWN="False"
 while [ True ]
 do
 
