@@ -21,22 +21,26 @@ if [[ $RSSI -lt $LTE_MIN ]]; then
   echo "esta por debajo de $LTE_MIN, sin internet"
   if [ $IS_DOWN == "False" ]; then
     IS_DOWN="True"
-    echo "corriendo ifdown"
-    sudo ifdown wwan0
-    echo "esperando 15 segundos"
-    sleep 10
+    echo "corriendo ifconfig wwan0 down"
+    sudo /usr/sbin/ifconfig wwan0 down
+    echo "esperando 7 segundos"
+    /usr/bin/sleep 2
   fi
 else
   if [ $IS_DOWN == "True" ]; then
+    echo "bajando..."
     IS_DOWN="False"
-    sudo ifup wwan0
-    echo "esperando 15 segundos"
-    sleep 10
+    sudo /usr/bin/qmi-network /dev/cdc-wdm0 start
+    /usr/bin/sleep 5
+    sudo /usr/sbin/udhcpc -q -f -i wwan0
+    echo "esperando 10 segundos"
+    /usr/bin/sleep 5
   fi
   echo "esta por encima de $LTE_MIN, con internet"
 fi
 
 
+/usr/bin/sleep 5
 
 # rm $LOCK_FILE
 # echo "************ archivo lock /var/lock/bb-watchdog.lock eliminado ******************** "
@@ -45,5 +49,4 @@ echo '**************************************************************************
 echo ''
 echo ''
 
-sleep 5
 done
