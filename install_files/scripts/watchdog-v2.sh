@@ -23,7 +23,7 @@ if [[ $RSSI -lt $LTE_MIN ]]; then
   echo "corriendo ifdown"
   sudo ifdown wwan0
 else
-  if [[ IS_DOWN -eq "True" ]]; then
+  if [[ IS_DOWN == "True" ]]; then
     IS_DOWN="False"
     sudo ifup wwan0
   fi
