@@ -19,12 +19,12 @@ echo "RSSI: $RSSI"
 
 if [[ $RSSI -lt $LTE_MIN ]]; then
   echo "esta por debajo de $LTE_MIN, sin internet"
-  IS_DOWN=True
+  IS_DOWN="True"
   echo "corriendo ifdown"
   sudo ifdown wwan0
 else
-  if [[ IS_DOWN ]]; then
-    IS_DOWN=False
+  if [[ IS_DOWN -eq "True" ]]; then
+    IS_DOWN="False"
     sudo ifup wwan0
   fi
   echo "esta por encima de $LTE_MIN, con internet"
