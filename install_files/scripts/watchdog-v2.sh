@@ -26,7 +26,7 @@ else
   if [[ IS_DOWN ]]; then
     IS_DOWN=False
     sudo ifup wwan0
-  if
+  fi
   echo "esta por encima de $LTE_MIN, con internet"
 fi
 
