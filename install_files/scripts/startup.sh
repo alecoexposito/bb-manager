@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+
 /usr/bin/sleep 10
 sudo /usr/bin/python /home/zurikato/scripts/at-command.py AT+QGPS=1 serial/by-id/usb-Android_Android-if02-port0 &
 /usr/bin/sleep 20
