@@ -22,10 +22,14 @@ if [[ $RSSI -lt $LTE_MIN ]]; then
   IS_DOWN="True"
   echo "corriendo ifdown"
   sudo ifdown wwan0
+  echo "esperando 15 segundos"
+  sleep 10
 else
   if [[ IS_DOWN == "True" ]]; then
     IS_DOWN="False"
     sudo ifup wwan0
+    echo "esperando 15 segundos"
+    sleep 10
   fi
   echo "esta por encima de $LTE_MIN, con internet"
 fi
