@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 IS_DOWN="False"
+DOWN_COUNTER=0
+UP_COUNTER=0
+
 while [ True ]
 do
 
@@ -12,7 +15,11 @@ do
 # echo 0 > /var/lock/bb-watchdog.lock
 LTE_MIN=-90
 LTE_MAX=-50
+
 echo /bin/date
+echo "up counter: $UP_COUNTER"
+echo "down counter: $DOWN_COUNTER"
+
 echo "gps info"
 COORDS=$(/usr/bin/qmicli -p -d /dev/cdc-wdm0 --loc-get-position-report 2>&1 | head -n 30)
 LAT=$(echo $COORDS | sed -n "s/^.*latitude:\s*\(\S*\).*$/\1/p")
@@ -25,14 +32,12 @@ RSSI=$(echo $INFO | sed -n "s/^.*RSSI:\s'*\(\S*\).*$/\1/p")
 echo "Respuesta: $INFO"
 echo "RSSI: $RSSI"
 
-DOWN_COUNTER=0
-UP_COUNTER=0
 
 if [[ $RSSI -lt $LTE_MIN ]]; then
   echo "esta por debajo de $LTE_MIN, sin internet"
   UP_COUNTER=0
   ((DOWN_COUNTER++))
-  if [ $DOWN_COUNTER -gt 3 ]; then
+  if [[ $DOWN_COUNTER -gt 3 ]]; then
     DOWN_COUNTER=0
     sudo /usr/bin/qmi-network /dev/cdc-wdm0 stop
     echo "corriendo ifconfig wwan0 down"
@@ -43,7 +48,7 @@ if [[ $RSSI -lt $LTE_MIN ]]; then
 else
   DOWN_COUNTER=0
   ((UP_COUNTER++))
-  if [ UP_COUNTER -gt 3 ]; then
+  if [[ UP_COUNTER -gt 3 ]]; then
     echo "subiendo red..."
     UP_COUNTER=0
     sudo /usr/bin/qmi-network /dev/cdc-wdm0 start
