@@ -27,10 +27,15 @@ LNG=$(echo $COORDS | sed -n "s/^.*longitude:\s*\(\S*\).*$/\1/p")
 echo "$LAT, $LNG"
 
 INFO=$(qmicli --device=/dev/cdc-wdm0 --nas-get-signal-info 2>&1)
-NET=$(echo $INFO | sed -n "s/^.*:\s'*\(\S*\).*$/\1/p")
+if [[ $INFO == *"LTE:"* ]]; then
+  echo "seteando minimo para lte en -90"
+  LTE_MIN=-90
+fi
 
-echo "red:  $NET"
-
+if [[ $INFO == *"WCDMA:"* ]]; then
+  echo "seteando minimo para WCDMA en -90"
+  LTE_MIN=-108
+fi
 
 echo "intensidad de la señal"
 RSSI=$(echo $INFO | sed -n "s/^.*RSSI:\s'*\(\S*\).*$/\1/p")
