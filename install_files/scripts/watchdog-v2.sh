@@ -16,7 +16,7 @@ do
 LTE_MIN=-90
 LTE_MAX=-50
 
-echo /bin/date
+/bin/date
 echo "up counter: $UP_COUNTER"
 echo "down counter: $DOWN_COUNTER"
 
