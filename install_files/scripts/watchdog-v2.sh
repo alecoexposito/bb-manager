@@ -38,12 +38,15 @@ if [[ $RSSI -lt $LTE_MIN ]]; then
   UP_COUNTER=0
   ((DOWN_COUNTER++))
   if [[ $DOWN_COUNTER -gt 3 ]]; then
-    DOWN_COUNTER=0
-    sudo /usr/bin/qmi-network /dev/cdc-wdm0 stop
-    echo "corriendo ifconfig wwan0 down"
-    sudo /usr/sbin/ifconfig wwan0 down
-    echo "esperando 7 segundos"
-    /usr/bin/sleep 2
+      DOWN_COUNTER=0
+      if [ $IS_DOWN == "False" ]; then
+      IS_DOWN="True"
+      sudo /usr/bin/qmi-network /dev/cdc-wdm0 stop
+      echo "corriendo ifconfig wwan0 down"
+      sudo /usr/sbin/ifconfig wwan0 down
+      echo "esperando 7 segundos"
+      /usr/bin/sleep 2
+    fi
   fi
 else
   DOWN_COUNTER=0
@@ -51,11 +54,14 @@ else
   if [[ UP_COUNTER -gt 3 ]]; then
     echo "subiendo red..."
     UP_COUNTER=0
-    sudo /usr/bin/qmi-network /dev/cdc-wdm0 start
-    /usr/bin/sleep 5
-    sudo /usr/sbin/udhcpc -q -f -i wwan0
-    echo "esperando 10 segundos"
-    /usr/bin/sleep 5
+    if [ $IS_DOWN == "True" ]; then
+      IS_DOWN="False"
+      sudo /usr/bin/qmi-network /dev/cdc-wdm0 start
+      /usr/bin/sleep 5
+      sudo /usr/sbin/udhcpc -q -f -i wwan0
+      echo "esperando 10 segundos"
+      /usr/bin/sleep 5
+    fi
   fi
   echo "esta por encima de $LTE_MIN, con internet"
 fi
