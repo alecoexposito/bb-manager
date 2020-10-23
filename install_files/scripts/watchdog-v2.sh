@@ -26,8 +26,13 @@ LAT=$(echo $COORDS | sed -n "s/^.*latitude:\s*\(\S*\).*$/\1/p")
 LNG=$(echo $COORDS | sed -n "s/^.*longitude:\s*\(\S*\).*$/\1/p")
 echo "$LAT, $LNG"
 
-echo "intensidad de la señal"
 INFO=$(qmicli --device=/dev/cdc-wdm0 --nas-get-signal-info 2>&1)
+NET=$(echo $INFO | sed -n "s/^.*:\s'*\(\S*\).*$/\1/p")
+
+echo "red:  $NET"
+
+
+echo "intensidad de la señal"
 RSSI=$(echo $INFO | sed -n "s/^.*RSSI:\s'*\(\S*\).*$/\1/p")
 echo "Respuesta: $INFO"
 echo "RSSI: $RSSI"
