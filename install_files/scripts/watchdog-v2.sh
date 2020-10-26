@@ -33,7 +33,7 @@ if [[ $INFO == *"LTE:"* ]]; then
 fi
 
 if [[ $INFO == *"WCDMA:"* ]]; then
-  echo "seteando minimo para WCDMA en -90"
+  echo "seteando minimo para WCDMA en -108"
   LTE_MIN=-108
 fi
 
@@ -64,7 +64,9 @@ else
   if [[ UP_COUNTER -gt 3 ]]; then
     echo "subiendo red..."
     UP_COUNTER=0
-    if [ $IS_DOWN == "True" ]; then
+    STATUS="$(qmi-network /dev/cdc-wdm0 status)"
+    if [ $IS_DOWN == "True" || ! echo "$STATUS" | grep -q "Connection status: 'connected'" ]; then
+      echo "en el if por la respuesta del estado: $STATUS"
       IS_DOWN="False"
       sudo /usr/bin/qmi-network /dev/cdc-wdm0 start
       /usr/bin/sleep 5
