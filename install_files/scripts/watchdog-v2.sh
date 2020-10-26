@@ -69,9 +69,9 @@ else
     if [ $IS_DOWN == "True" ] || [ ! echo "$STATUS" | grep -q "Status: connected" ]; then
       echo "en el if por la respuesta del estado que no es connected"
       IS_DOWN="False"
-      sudo /usr/bin/qmi-network /dev/cdc-wdm0 start 2>&1
+      sudo /usr/bin/qmi-network /dev/cdc-wdm0 start
       /usr/bin/sleep 5
-      sudo /usr/sbin/udhcpc -q -f -i wwan0 2>&1
+      sudo /usr/sbin/udhcpc -q -f -i wwan0
       echo "esperando 10 segundos"
       /usr/bin/sleep 5
     fi
