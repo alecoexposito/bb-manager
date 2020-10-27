@@ -33,8 +33,8 @@ if [[ $INFO == *"LTE:"* ]]; then
 fi
 
 if [[ $INFO == *"WCDMA:"* ]]; then
-  echo "seteando minimo para WCDMA en -108"
-  LTE_MIN=-108
+  echo "seteando minimo para WCDMA en -104"
+  LTE_MIN=-104
 fi
 
 echo "intensidad de la señal"
