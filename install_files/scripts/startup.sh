@@ -7,5 +7,5 @@ sudo /usr/bin/python /home/zurikato/scripts/at-command.py AT+QGPS=1 serial/by-id
 sudo /usr/bin/qmi-network /dev/cdc-wdm0 start
 /usr/bin/sleep 5
 sudo /usr/sbin/udhcpc -q -f -i wwan0 &
-/usr/bin/sleep 90
+/usr/bin/sleep 45
 sudo /usr/bin/bash /home/zurikato/scripts/watchdog-v2.sh >> /home/zurikato/logs/watchdog-v2.logs
