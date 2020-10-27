@@ -66,7 +66,7 @@ else
     UP_COUNTER=0
     STATUS="$(qmi-network /dev/cdc-wdm0 status)"
     echo "Estado: $STATUS"
-    if [ $IS_DOWN == "True" ] || [ ! $(echo $STATUS | grep -q "Status: connected") ]; then
+    if [ $IS_DOWN == "True" ] || [ ! $(echo $STATUS == *"Status: connected"* ]; then
       echo "en el if por la respuesta del estado que no es connected"
       IS_DOWN="False"
       sudo /usr/bin/qmi-network /dev/cdc-wdm0 stop
