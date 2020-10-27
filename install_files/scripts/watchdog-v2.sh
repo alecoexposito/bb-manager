@@ -52,6 +52,7 @@ if [[ $RSSI -lt $LTE_MIN ]]; then
       if [ $IS_DOWN == "False" ]; then
       IS_DOWN="True"
       sudo /usr/bin/qmi-network /dev/cdc-wdm0 stop
+      /usr/bin/sleep 5
       echo "corriendo ifconfig wwan0 down"
       sudo /usr/sbin/ifconfig wwan0 down
       echo "esperando 7 segundos"
@@ -62,13 +63,17 @@ else
   DOWN_COUNTER=0
   ((UP_COUNTER++))
   if [[ UP_COUNTER -gt 3 ]]; then
-    echo "subiendo red..."
     UP_COUNTER=0
     STATUS="$(qmi-network /dev/cdc-wdm0 status)"
     echo "Estado: $STATUS"
     if [ $IS_DOWN == "True" ] || [ ! echo "$STATUS" | grep -q "Status: connected" ]; then
       echo "en el if por la respuesta del estado que no es connected"
       IS_DOWN="False"
+      sudo /usr/bin/qmi-network /dev/cdc-wdm0 stop
+      sleep 5
+      echo "corriendo ifconfig wwan0 down"
+      sudo /usr/sbin/ifconfig wwan0 down
+      /usr/bin/sleep 5
       sudo /usr/bin/qmi-network /dev/cdc-wdm0 start
       /usr/bin/sleep 5
       sudo /usr/sbin/udhcpc -q -f -i wwan0
