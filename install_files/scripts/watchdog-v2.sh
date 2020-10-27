@@ -73,7 +73,7 @@ else
       sleep 5
       echo "corriendo ifconfig wwan0 down"
       sudo /usr/sbin/ifconfig wwan0 down
-      /usr/bin/sleep 5
+      /usr/bin/sleep 10
       sudo /usr/bin/qmi-network /dev/cdc-wdm0 start
       /usr/bin/sleep 5
       sudo /usr/sbin/udhcpc -q -f -i wwan0
