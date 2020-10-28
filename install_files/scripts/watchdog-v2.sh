@@ -9,7 +9,7 @@ MODEM_PORT='serial/by-id/usb-Android_Android-if02-port0'
 while [ True ]
 do
 
-CARD_STATUS="$(qmicli --device=/dev/cdc-wdm0 --uim-get-card-status)"
+CARD_STATUS=$(qmicli --device=/dev/cdc-wdm0 --uim-get-card-status)
 echo "Estado DE LA SIM: $CARD_STATUS"
 if ! [[ $CARD_STATUS == *"Card state: 'present'"* ]]; then
 
