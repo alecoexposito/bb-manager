@@ -3,7 +3,7 @@
 IS_DOWN="False"
 DOWN_COUNTER=0
 UP_COUNTER=0
-ITERATION_COUNTER=0
+ALREADY_RESTARTED="False"
 MODEM_PORT='serial/by-id/usb-Android_Android-if02-port0'
 
 while [ True ]
