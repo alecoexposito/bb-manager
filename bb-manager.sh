@@ -123,17 +123,18 @@ setup_modem() {
 	# sudo apt-get install perl
 	# sudo cpan install Device::Modem
 	# sudo cpan install Device::Gsm
-    sudo cp install_files/modem/etc/network/interfaces.d/wwan0 /etc/network/interfaces.d/
+    # sudo cp install_files/modem/etc/network/interfaces.d/wwan0 /etc/network/interfaces.d/
     sudo cp install_files/modem/etc/qmi-network.conf /etc/
-    sudo cp install_files/modem/usr/local/bin/qmi-network-raw /usr/local/bin/
-	echo "starting modem"
-	sudo /sbin/ifdown wwan0
-	sleep 3
-	sudo /sbin/ifup wwan0
+    # sudo cp install_files/modem/usr/local/bin/qmi-network-raw /usr/local/bin/
+	# echo "starting modem"
+	# sudo /sbin/ifdown wwan0
+	# sleep 3
+	# sudo /sbin/ifup wwan0
   echo "copiando scripts"
 	mkdir ~/scripts
 	sudo cp install_files/scripts/ ~/ -r
-	sudo chmod +x ~/scripts/watchdog.sh
+	sudo chmod +x ~/scripts/watchdog-v2.sh
+	sudo chmod +x ~/scripts/startup.sh
 	sudo chmod +x ~/scripts/at-command.py
   	MODEM_PORT='ttyUSB2'
 	echo "Adicionando linea para activar gps en /etc/rc.local"
@@ -142,7 +143,8 @@ setup_modem() {
 	sudo /usr/bin/python ~/scripts/at-command.py AT+QGPS=1 $MODEM_PORT
 
   sudo mkdir /root/log
-	line="*/2 * * * * /home/zurikato/scripts/watchdog.sh >> /root/log/watchdog.log; /bin/sync /root/log/watchdog.log; /bin/sync"
+	# line="*/2 * * * * /home/zurikato/scripts/watchdog.sh >> /root/log/watchdog.log; /bin/sync /root/log/watchdog.log; /bin/sync"
+	line="@reboot /home/zurikato/scripts/startup.sh >> /root/log/startup.log; /bin/sync /root/log/watchdog.log; /bin/sync"
 	(sudo crontab -u root -l; sudo echo "$line" ) | sudo crontab -u root -
 	echo "agregado watchdog al crontab de root"
 
