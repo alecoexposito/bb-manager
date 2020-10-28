@@ -1,10 +1,32 @@
 #!/usr/bin/env bash
+
 IS_DOWN="False"
 DOWN_COUNTER=0
 UP_COUNTER=0
-
+ALREADY_RESTARTED="False"
 while [ True ]
 do
+
+CARD_STATUS="$(qmicli --device=/dev/cdc-wdm0 --uim-get-card-status)"
+echo "Estado DE LA SIM: $CARD_STATUS"
+if ! [[ $CARD_STATUS == *"Card state: 'present'"* ]]; then
+
+  echo "No hay SIM conectada"
+  if [[ $ALREADY_RESTARTED == 0 ]]; then
+    echo "sim no detectada, reiniciando solo 1 vez"
+    ALREADY_RESTARTED="True"
+    echo "corriendo comando at AT+CFUN=1,1"
+    /usr/bin/python /home/zurikato/scripts/at-command.py AT+CFUN=1,1 $MODEM_PORT
+    /usr/bin/sleep 10
+    echo "activando gps"
+    /usr/bin/python /home/zurikato/scripts/at-command.py AT+QGPS=1 $MODEM_PORT
+    /usr/bin/sleep 3
+  fi
+  echo "esperando 10 segundos"
+  /usr/bin/sleep 10
+
+else
+
 
 # LOCK_FILE=/var/lock/bb-watchdog.lock
 # if test -f $LOCK_FILE; then
@@ -52,7 +74,7 @@ if [[ $RSSI -lt $LTE_MIN ]]; then
       if [ $IS_DOWN == "False" ]; then
       IS_DOWN="True"
       sudo /usr/bin/qmi-network /dev/cdc-wdm0 stop
-      /usr/bin/sleep 5Si
+      /usr/bin/sleep 5
       echo "corriendo ifconfig wwan0 down"
       sudo /usr/sbin/ifconfig wwan0 down
       echo "esperando 7 segundos"
@@ -93,5 +115,5 @@ fi
 echo '*********************************************************************************'
 echo ''
 echo ''
-
+fi
 done
