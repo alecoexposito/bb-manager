@@ -369,6 +369,48 @@ install_pm2_typescript() {
 	fi
 }
 
+setup_hostpad_new() {
+	echo "obteniendo mac address"
+	mac=$(cat /sys/class/net/wlan0/address)
+	sudo cp install_files/hostpad/etc/udev/rules.d/70-persistent-net.rules /etc/udev/rules.d
+	sudo sed 's/mac-to-replace/$mac/g' /etc/udev/rules.d/70-persistent-net.rules
+	sudo cp install_files/hostpad/etc/network/interfaces /etc/network
+	
+	read -p "Entre el ip: " -i "192.168.1.50" -e ip_hostapd < /dev/tty
+	sudo sed -i '0,/address/{s:^[ \t]*address[ \t]\([ \t]*.*\)$:address '${ip_hostapd}':}' /etc/network/interfaces
+
+	sudo cp install_files/hostpad/etc/hostapd.conf /etc
+	read -p "Entre el SSID: " -i "BB-NETWORK" -e ssid < /dev/tty
+	sudo sed -i 's:^[ \t]*ssid[ \t]*=\([ \t]*.*\)$:ssid='${ssid}':' /etc/hostapd.conf
+
+	echo 'printf "%s\n" DAEMON_CONF=\"/etc/hostapd.conf\" >> /etc/default/hostapd' | sudo su
+	sudo sed -i "\$i net.ipv4.ip_forward=1" /etc/sysctl.conf
+
+	sudo apt-get install dnsmasq
+	sudo cp install_files/hostpad/etc/dnsmasq.conf /etc
+
+	sudo sh -c "echo 1 > /proc/sys/net/ipv4/ip_forward"
+	sudo iptables -t nat -A POSTROUTING -wwan0 -j MASQUERADE
+	sudo iptables -A FORWARD -i wwan0 -o ap0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+	sudo iptables -A FORWARD -i wwan0 -o eth0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+	sudo iptables -A FORWARD -i ap0 -o wwan0 -j ACCEPT
+	sudo iptables -A FORWARD -i eth0 -o wwan0 -j ACCEPT
+	sudo sh -c "iptables-save > /etc/iptables.ipv4.nat"
+
+
+
+  sudo sh -c "echo 1 > /proc/sys/net/ipv4/ip_forward"
+  sudo iptables -t nat -A POSTROUTING -o wwan0 -j MASQUERADE
+  sudo iptables -A FORWARD -i wwan0 -o wlan0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+  sudo iptables -A FORWARD -i wlan0 -o wwan0 -j ACCEPT
+  sudo sh -c "iptables-save > /etc/iptables.ipv4.nat"
+
+  install_ntp
+  # echo 'Reiniciando...'
+  # sudo reboot
+
+}
+
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
@@ -391,7 +433,7 @@ while [ "$1" != "" ]; do
       exit 0
       ;;
     --hostpad)
-      setup_hostpad
+      setup_hostpad_new
       exit 0
       ;;
     -v)
