@@ -4,7 +4,7 @@ IS_DOWN="False"
 DOWN_COUNTER=0
 UP_COUNTER=0
 ALREADY_RESTARTED="False"
-MODEM_PORT='serial/by-id/usb-Android_Android-if02-port0'
+MODEM_PORT="serial/by-id/usb-Android_Android-if02-port0"
 
 while [ True ]
 do
@@ -21,10 +21,10 @@ if ! [[ $CARD_STATUS == *"Card state: 'present'"* ]]; then
   ALREADY_RESTARTED="True"
   echo "sim no detectada, reiniciando..."
   echo "corriendo comando at AT+CFUN=1,1"
-  /usr/bin/python /home/zurikato/scripts/at-command.py AT+CFUN=1,1 $MODEM_PORT
+  /usr/bin/python /home/zurikato/scripts/at-command.py AT+CFUN=1,1 serial/by-id/usb-Android_Android-if02-port0
   /usr/bin/sleep 16
   echo "activando gps"
-  /usr/bin/python /home/zurikato/scripts/at-command.py AT+QGPS=1 $MODEM_PORT
+  /usr/bin/python /home/zurikato/scripts/at-command.py AT+QGPS=1 serial/by-id/usb-Android_Android-if02-port0
   /usr/bin/sleep 10
   echo "esperando 10 segundos"
 
