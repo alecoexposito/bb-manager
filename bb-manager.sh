@@ -398,17 +398,6 @@ setup_hostpad_new() {
 	sudo sh -c "iptables-save > /etc/iptables.ipv4.nat"
 
 
-
-  sudo sh -c "echo 1 > /proc/sys/net/ipv4/ip_forward"
-  sudo iptables -t nat -A POSTROUTING -o wwan0 -j MASQUERADE
-  sudo iptables -A FORWARD -i wwan0 -o wlan0 -m state --state RELATED,ESTABLISHED -j ACCEPT
-  sudo iptables -A FORWARD -i wlan0 -o wwan0 -j ACCEPT
-  sudo sh -c "iptables-save > /etc/iptables.ipv4.nat"
-
-  install_ntp
-  # echo 'Reiniciando...'
-  # sudo reboot
-
 }
 
 # A POSIX variable
