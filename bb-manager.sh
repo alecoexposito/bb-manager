@@ -373,7 +373,7 @@ setup_hostpad_new() {
 	echo "obteniendo mac address"
 	mac=$(cat /sys/class/net/wlan0/address)
 	sudo cp install_files/hostpad/etc/udev/rules.d/70-persistent-net.rules /etc/udev/rules.d
-	sudo sed 's/mac-to-replace/$mac/g' /etc/udev/rules.d/70-persistent-net.rules
+	sudo sed "s/mac-to-replace/$mac/g" /etc/udev/rules.d/70-persistent-net.rules
 	sudo cp install_files/hostpad/etc/network/interfaces /etc/network
 	
 	read -p "Entre el ip: " -i "192.168.1.50" -e ip_hostapd < /dev/tty
