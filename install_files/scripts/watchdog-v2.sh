@@ -15,17 +15,17 @@ if ! [[ $CARD_STATUS == *"Card state: 'present'"* ]]; then
 
   echo "No hay SIM conectada"
   if [[ $ALREADY_RESTARTED == "True" ]]; then
-    echo "Esperando 3 minutos antes de volver a reiniciar..."
-    /usr/bin/sleep 180
+    echo "Esperando 1 minutos antes de volver a reiniciar..."
+    /usr/bin/sleep 60
   fi
   ALREADY_RESTARTED="True"
   echo "sim no detectada, reiniciando..."
   echo "corriendo comando at AT+CFUN=1,1"
   /usr/bin/python /home/zurikato/scripts/at-command.py AT+CFUN=1,1 $MODEM_PORT
-  /usr/bin/sleep 13
+  /usr/bin/sleep 16
   echo "activando gps"
   /usr/bin/python /home/zurikato/scripts/at-command.py AT+QGPS=1 $MODEM_PORT
-  /usr/bin/sleep 3
+  /usr/bin/sleep 10
   echo "esperando 10 segundos"
 
 else
